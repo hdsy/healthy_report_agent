@@ -37,6 +37,7 @@
  * */
 
 #include "CCommandLineInfo.h"
+#include "CUnixFIleLock.h"
 
 void InitCommandLine()
 {
@@ -68,8 +69,17 @@ void SummaryAndReport()
 	/**
 	 * 确保一个目录只有一个进程在运行，通过在目录里建立一个/$mmap-id/single_instance.lck来实现
 	 */
+	CUnixFileLock objCUnixFileLock ();
 
-
+	if (objCUnixFileLock。GetLock())
+	{
+		std::cout << "I'm in ...." << std::endl;
+	}
+	else
+	{
+		std::cout << "I cannnot be in ...." << std::endl;
+		sleep(10000);
+	}
 	/**
 	 * 遍历目录里面的所有文件，目录会被忽略，更新文件的状态（最后修改时间、大小），并为每个文件分配一个线程去处理; 并循环
 	 */
