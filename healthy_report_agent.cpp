@@ -74,7 +74,7 @@ void SummaryAndReport()
 	if ( objCUnixFileLock.GetLock() )
 	{
 		std::cout << "I'm in ...." << std::endl;
-		sleep(1000);
+		sleep(20);
 	}
 	else
 	{
