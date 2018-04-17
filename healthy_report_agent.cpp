@@ -42,7 +42,7 @@
 void InitCommandLine()
 {
 	MyUtility::g_objCCommandLineInfo.AddEntry("log-dir","--log-dir=","/data/healthy_report/log/",false,true,"服务健康上报日志存放目录，将分析此目录的文件并上报消息队列");
-	MyUtility::g_objCCommandLineInfo.AddEntry("ext-name","--ext-name=","log",false,true,"服务健康上报日志的扩展名,如*log");
+	MyUtility::g_objCCommandLineInfo.AddEntry("ext-name","--ext-name=","*log",false,true,"服务健康上报日志的扩展名,如*log");
 	MyUtility::g_objCCommandLineInfo.AddEntry("kafuka-url","--kafuka-url=","kafuka://127.0.0.1:9092/healthy_report/0",false,true,"kafuka消息队列的地址、topic名与分区号");
 	MyUtility::g_objCCommandLineInfo.AddEntry("mmap-id","--mmap-id=",".processing.hra",false,true,"mmap目录名，记录处理状态与中间结果，默认10M，不够时会自动拓展,1.shm,2.shm，在区块间建立链接");
 	MyUtility::g_objCCommandLineInfo.AddEntry("summary_cycle","--summary_cycle=","300",false,true,"统计周期，按这个时间间隔汇总，单位秒，默认5分钟");
@@ -95,7 +95,7 @@ void SummaryAndReport()
 	memset(szCmd,0,sizeof(szCmd));
 	memset(szRes,0,sizeof(szRes));
 
-	sprintf(szCmd,"ls -1 %s/%s",MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir").c_str(),
+	sprintf(szCmd,"ls -1 %s/%s 2>/dev/null",MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir").c_str(),
 			MyUtility::g_objCCommandLineInfo.GetArgVal("ext-name").c_str());
 
 	while(true)
