@@ -73,12 +73,12 @@ void SummaryAndReport()
 
 	if ( objCUnixFileLock.GetLock() )
 	{
-		std::cout << "I'm in ...." << std::endl;
+		std::cout << "工作进行中，可通过命令行 watch -d -n 1 \"" << g_objCCommandLineInfo.GetExeName() << "--cmd=watch\" 查看" << std::endl;
 		sleep(20);
 	}
 	else
 	{
-		std::cout << "I cannnot be in ...." << std::endl;
+		std::cout << "已经有进程在工作，进程号是：" << objCUnixFileLock.GetWorkingProcessID()<< std::endl;
 	}
 	/**
 	 * 遍历目录里面的所有文件，目录会被忽略，更新文件的状态（最后修改时间、大小），并为每个文件分配一个线程去处理; 并循环
@@ -94,7 +94,7 @@ int main(int argc, const char **argv) {
 
 	if(argc == 1)
 	{
-		std::cout <<"Usage : \r\n\r\n"<< MyUtility::g_objCCommandLineInfo.GetPrompt() << "\r\n"<<std::endl;
+		std::cout <<"使用方法 : \r\n\r\n"<< MyUtility::g_objCCommandLineInfo.GetPrompt() << "\r\n"<<std::endl;
 		return 0;
 	}
 
