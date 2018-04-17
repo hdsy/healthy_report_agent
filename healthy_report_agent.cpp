@@ -69,11 +69,14 @@ void SummaryAndReport()
 	/**
 	 * 确保一个目录只有一个进程在运行，通过在目录里建立一个/$mmap-id/single_instance.lck来实现
 	 */
-	CUnixFileLock objCUnixFileLock ;
+	CUnixFileLock objCUnixFileLock( MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir") );
 
 	if ( objCUnixFileLock.GetLock() )
 	{
-		std::cout << "工作进行中，可通过命令行 watch -d -n 1 \"" << MyUtility::g_objCCommandLineInfo.GetExePath() << " --cmd=watch\" 查看" << std::endl;
+		std::cout << "工作进行中，可通过命令行查看\r\n"
+				<< " watch -d -n 1 \"" << MyUtility::g_objCCommandLineInfo.GetExePath()
+				<< " --cmd=watch --log-dir=" << MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir");
+				<< ""\" " << std::endl;
 		sleep(20);
 	}
 	else
