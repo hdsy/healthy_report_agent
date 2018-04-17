@@ -75,8 +75,8 @@ void SummaryAndReport()
 	{
 		std::cout << "工作进行中，可通过命令行查看\r\n"
 				<< " watch -d -n 1 \"" << MyUtility::g_objCCommandLineInfo.GetExePath()
-				<< " --cmd=watch --log-dir=" << MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir");
-				<< ""\" " << std::endl;
+				<< " --cmd=watch --log-dir=" << MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir")
+				<< "\" " << std::endl;
 		sleep(20);
 	}
 	else
