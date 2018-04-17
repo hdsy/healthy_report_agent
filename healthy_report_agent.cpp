@@ -73,7 +73,7 @@ void SummaryAndReport()
 
 	if ( objCUnixFileLock.GetLock() )
 	{
-		std::cout << "工作进行中，可通过命令行 watch -d -n 1 \"" << MyUtility::g_objCCommandLineInfo.GetExeName() << "--cmd=watch\" 查看" << std::endl;
+		std::cout << "工作进行中，可通过命令行 watch -d -n 1 \"" << MyUtility::g_objCCommandLineInfo.GetExePath() << " --cmd=watch\" 查看" << std::endl;
 		sleep(20);
 	}
 	else
