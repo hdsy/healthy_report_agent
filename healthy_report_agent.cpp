@@ -39,12 +39,14 @@
 #include "CCommandLineInfo.h"
 #include "CUnixFileLock.h"
 
+#include "CProcessStatus.h"
+
 void InitCommandLine()
 {
 	MyUtility::g_objCCommandLineInfo.AddEntry("log-dir","--log-dir=","/data/healthy_report/log/",false,true,"服务健康上报日志存放目录，将分析此目录的文件并上报消息队列");
 	MyUtility::g_objCCommandLineInfo.AddEntry("ext-name","--ext-name=","*log",false,true,"服务健康上报日志的扩展名,如*log");
 	MyUtility::g_objCCommandLineInfo.AddEntry("kafuka-url","--kafuka-url=","kafuka://127.0.0.1:9092/healthy_report/0",false,true,"kafuka消息队列的地址、topic名与分区号");
-	MyUtility::g_objCCommandLineInfo.AddEntry("mmap-id","--mmap-id=",".processing.hra",false,true,"mmap目录名，记录处理状态与中间结果，默认10M，不够时会自动拓展,1.shm,2.shm，在区块间建立链接");
+	MyUtility::g_objCCommandLineInfo.AddEntry("mmap-id","--mmap-id=",".hra.processing.",false,true,"mmap文件名前缀，记录文件处理状态*file.1与统计结果*summary.1，默认1000条，不够时会自动拓展,.1,.2");
 	MyUtility::g_objCCommandLineInfo.AddEntry("summary_cycle","--summary_cycle=","300",false,true,"统计周期，按这个时间间隔汇总，单位秒，默认5分钟");
 	MyUtility::g_objCCommandLineInfo.AddEntry("eliminate-cycle-count","--eliminate-cycle-count=","10",false,true,"文件过期时间，统计周期的倍数，默认为10个");
 	MyUtility::g_objCCommandLineInfo.AddEntry("run-by-cmdline","run-by-cmdline","off",true,true,"文件过期时间，统计周期的倍数，默认为10个");
@@ -90,6 +92,11 @@ void SummaryAndReport()
 	/**
 	 * 遍历目录里面的所有文件，目录会被忽略，更新文件的状态（最后修改时间、大小），并为每个文件分配一个线程去处理; 并循环
 	 */
+	CFileProcessingStatus objCFileProcessingStatus;
+
+	objCFileProcessingStatus.Init(MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir"),
+			MyUtility::g_objCCommandLineInfo.GetArgVal("mmap-id"),
+			100);
 
 	char szCmd[1024],szRes[1024];
 	memset(szCmd,0,sizeof(szCmd));
@@ -114,6 +121,13 @@ void SummaryAndReport()
 				if(ws) *ws = '\0';
 
 				std::cout << "开始文件的分析 ： " << szRes <<std::endl;
+
+				// 启动线程进行文件分析，并上报
+				if(NULL == objCFileProcessingStatus.GetFileProcess(szRes))
+				{
+
+				}
+
 			}
 			pclose(dl);
 		}
