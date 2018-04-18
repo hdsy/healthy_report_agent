@@ -41,6 +41,8 @@
 
 #include "CProcessStatus.h"
 
+#include <sys/stat.h>
+
 void InitCommandLine()
 {
 	MyUtility::g_objCCommandLineInfo.AddEntry("log-dir","--log-dir=","/data/healthy_report/log/",false,true,"服务健康上报日志存放目录，将分析此目录的文件并上报消息队列");
@@ -123,8 +125,21 @@ void SummaryAndReport()
 				std::cout << "开始文件的分析 ： " << szRes <<std::endl;
 
 				// 启动线程进行文件分析，并上报
-				if(NULL == objCFileProcessingStatus.GetFileProcess(szRes))
+				STFileProcessingStatus *pSTFileProcessingStatus = objCFileProcessingStatus.GetFileProcess(szRes);
+
+				if(NULL != pSTFileProcessingStatus )
 				{
+					struct stat s_buff;
+
+					int status = stat(szRes,&s_buff); //获取文件对应属
+
+					if (status == 0)
+					{
+						pSTFileProcessingStatus->tmLastModified = s_buff.st_mtime;
+						pSTFileProcessingStatus->ilSize = s_buff.st_size;
+
+
+					}
 
 				}
 

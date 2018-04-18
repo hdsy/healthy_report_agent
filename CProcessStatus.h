@@ -29,7 +29,7 @@ typedef struct ST_FileProcessingStatus
 	off_t ilSize;
 
 	time_t tmLastProcessing;
-	off_t ulOffset;
+	off_t ilOffset;
 
 }STFileProcessingStatus;
 
