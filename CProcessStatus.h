@@ -98,7 +98,7 @@ public:
 				return -1;
 
 			pSTFileProcessingStatus->uiRecordMemID = i;
-
+/*
 			std::cout
 								<<std::left<< std::setw(50) << pSTFileProcessingStatus->szFileName
 								<<std::left<< std::setw(20)<< pSTFileProcessingStatus->ilSize
@@ -106,7 +106,7 @@ public:
 								<<std::left<< std::setw(20)<< pSTFileProcessingStatus->ilOffset
 								<<std::left<< std::setw(20)<< pSTFileProcessingStatus->tmLastProcessing
 								<<std::left<< std::setw(20)<< pSTFileProcessingStatus->uiRecordMemID
-								<<std::left<< std::endl;
+								<<std::left<< std::endl;*/
 
 			// 空间释放了
 			if(pSTFileProcessingStatus->szFileName[0] == 0)
