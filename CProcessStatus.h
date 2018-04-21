@@ -224,7 +224,10 @@ public:
 	{
 		m_mapFileProcessingData.erase(file->szFileName);
 
-		remove(file->szFileName);
+		//remove(file->szFileName);
+
+
+		truncate(file->szFileName,0);
 
 		CPointer pt(1,file->uiRecordMemID);
 
@@ -263,6 +266,9 @@ public:
 				data->uiRecordMemID = pt.m_uiOffset;
 
 				strncpy(data->szFileName,filename,sizeof(data->szFileName));
+
+				m_mapFileProcessingData[filename] = data;
+
 
 				std::cout << "文件名["  << filename << "]  新增跟踪 : " << data->uiRecordMemID << std::endl;
 			}
