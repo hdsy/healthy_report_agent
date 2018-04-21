@@ -92,7 +92,7 @@ void SummaryAndReport()
 				<< " watch -d -n 1 \"" << MyUtility::g_objCCommandLineInfo.GetExePath()
 				<< " --cmd=watch --log-dir=" << MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir")
 				<< "\" " << std::endl;
-		sleep(20);
+
 	}
 	else
 	{

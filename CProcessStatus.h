@@ -172,47 +172,46 @@ public:
 				if(ws) *ws = '\0';
 
 
+				struct stat s_buff;
 
-				// 启动线程进行文件分析，并上报
-				STFileProcessingStatus *pSTFileProcessingStatus = GetFileProcess(szRes);
+				int status = stat(szRes,&s_buff); //获取文件对应属
 
-				if(NULL != pSTFileProcessingStatus )
+				if ((status == 0) && (s_buff.st_size>6))
 				{
-					struct stat s_buff;
 
-					int status = stat(szRes,&s_buff); //获取文件对应属
+					// 启动线程进行文件分析，并上报
+					STFileProcessingStatus *pSTFileProcessingStatus = GetFileProcess(szRes);
 
-					if (status == 0)
+					if(NULL != pSTFileProcessingStatus )
 					{
-						pSTFileProcessingStatus->tmLastModified = s_buff.st_mtime;
-						pSTFileProcessingStatus->ilSize = s_buff.st_size;
+							pSTFileProcessingStatus->tmLastModified = s_buff.st_mtime;
+							pSTFileProcessingStatus->ilSize = s_buff.st_size;
 
-						if (pSTFileProcessingStatus->ilSize < pSTFileProcessingStatus->ilOffset)
-							pSTFileProcessingStatus->ilOffset = 0;
+							if (pSTFileProcessingStatus->ilSize < pSTFileProcessingStatus->ilOffset)
+								pSTFileProcessingStatus->ilOffset = 0;
 
-						if (pSTFileProcessingStatus->ilSize == pSTFileProcessingStatus->ilOffset)
-						{
-							// 1
-								if(pSTFileProcessingStatus->tmLastProcessing >= (pSTFileProcessingStatus->tmLastModified + m_iIntval ))
-									RemoveFile(pSTFileProcessingStatus);
-								else
-									pSTFileProcessingStatus->tmLastProcessing = time(NULL);
-							// 2
+							if (pSTFileProcessingStatus->ilSize == pSTFileProcessingStatus->ilOffset)
+							{
+								// 1
+									if(pSTFileProcessingStatus->tmLastProcessing >= (pSTFileProcessingStatus->tmLastModified + m_iIntval ))
+										RemoveFile(pSTFileProcessingStatus);
+									else
+										pSTFileProcessingStatus->tmLastProcessing = time(NULL);
+								// 2
 
 
-						}
-						std::cout << "记录文件处理进度 ： " << szRes <<std::endl;
+							}
+							std::cout << "记录文件处理进度 ： [" << szRes <<"]" <<std::endl;
 					}
 					else
 					{
-
-						std::cout << "获取文件信息失败 ： " << szRes <<std::endl;
+						std::cout << "没有足够的空间记录文件的进程 ： [" << szRes << "]" <<std::endl;
 					}
-
 				}
 				else
 				{
-					std::cout << "没有足够的空间记录文件的进程 ： " << szRes <<std::endl;
+
+					std::cout << "获取文件信息失败 ： [" << szRes << "] 或文件信息小于最小值："<< s_buff.st_size <<std::endl;
 				}
 
 			}
@@ -238,12 +237,16 @@ public:
 	{
 		STFileProcessingStatus * data = NULL;
 
-		std::cout << "文件名["  << filename << "]" << std::endl;
+
 
 
 		if(m_mapFileProcessingData.find(filename) != m_mapFileProcessingData.end())
 		{
+
+
 			data = m_mapFileProcessingData[filename];
+
+			std::cout << "文件名["  << filename << "]  已经跟踪 : " << data->uiRecordMemID << std::endl;
 		}
 		else
 		{
@@ -260,6 +263,8 @@ public:
 				data->uiRecordMemID = pt.m_uiOffset;
 
 				strncpy(data->szFileName,filename,sizeof(data->szFileName));
+
+				std::cout << "文件名["  << filename << "]  新增跟踪 : " << data->uiRecordMemID << std::endl;
 			}
 		}
 
