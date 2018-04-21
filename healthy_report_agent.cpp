@@ -66,7 +66,14 @@ void WatchProcessing()
 	 * 显示指定目录，正在对齐分析的进程信息、被其处理的文件进度、汇总的数据记录，上报的状态等等
 	 * 如果希望看到动态的，可使用watch来输出：watch -d -n 1 "hra --cmd=watch --log-dir=/data/healthy_report/log/"
 	 */
+	CFileProcessingStatus objCFileProcessingStatus;
 
+	objCFileProcessingStatus.Init(MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir"),
+			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("eliminate-cycle")),
+			MyUtility::g_objCCommandLineInfo.GetArgVal("mmap-id"),
+			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("max_file_count")));
+
+	objCFileProcessingStatus.DumpIno();
 
 }
 
