@@ -80,7 +80,7 @@ public:
 
 		size_t szStruct = sizeof(STFileProcessingStatus);  
 
-		std::cout << "初始化共享内存 ： " << m_sMapFileName << std::endl;
+		//std::cout << "初始化共享内存 ： " << m_sMapFileName << std::endl;
 
 		if( 0 != objCLineSpaceMgr.Init(szStruct,m_iFileMaxCount,m_sMapFileName.c_str(),true) )
 		{
@@ -115,25 +115,25 @@ public:
 		std::map<std::string,STFileProcessingStatus *>::iterator iter;
 
 		std::cout << "正在处理的文件列表 : \r\n "
-				"=========================================\r\n " ;
+				"\r\n=========================================\r\n " ;
 		std::cout << std::setw(50)<< "文件名"
-					<< std::setw(12)<< "尺寸"
-					<< std::setw(12)<< "修改时间"
-					<< std::setw(12)<< "偏移量"
-					<< std::setw(12)<< "处理时间"
-					<< std::setw(12)<< "内存ID"
-					<< std::endl;
+				<<std::left << std::setw(20)<< "尺寸"
+				<<std::left<< std::setw(20)<< "修改时间"
+				<<std::left<< std::setw(20)<< "偏移量"
+				<<std::left<< std::setw(20)<< "处理时间"
+				<<std::left<< std::setw(20)<< "内存ID"
+				<<std::left<< std::endl;
 
 
 		for(iter=m_mapFileProcessingData.begin();iter != m_mapFileProcessingData.end();iter++)
 		{
-			std::cout << std::setw(50)<< (iter->second)->szFileName
-					<< std::setw(12)<< (iter->second)->ilSize
-					<< std::setw(12)<< (iter->second)->tmLastModified
-					<< std::setw(12)<< (iter->second)->ilOffset
-					<< std::setw(12)<< (iter->second)->tmLastProcessing
-					<< std::setw(12)<< (iter->second)->uiRecordMemID
-					<< std::endl;
+			std::cout <<std::left<< std::setw(50)<< (iter->second)->szFileName
+					<<std::left<< std::setw(20)<< (iter->second)->ilSize
+					<<std::left<< std::setw(20)<< (iter->second)->tmLastModified
+					<<std::left<< std::setw(20)<< (iter->second)->ilOffset
+					<<std::left<< std::setw(20)<< (iter->second)->tmLastProcessing
+					<<std::left<< std::setw(20)<< (iter->second)->uiRecordMemID
+					<<std::left<< std::endl;
 		}
 
 	}
