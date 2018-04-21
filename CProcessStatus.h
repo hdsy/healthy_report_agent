@@ -128,7 +128,7 @@ public:
 		for(iter=m_mapFileProcessingData.begin();iter != m_mapFileProcessingData.end();iter++)
 		{
 			std::cout
-					<<std::left<< std::setw(50)<< (iter->second)->szFileName
+					<<std::left<< std::setw(50)<< "[" << (iter->second)->szFileName << "]"
 					<<std::left<< std::setw(20)<< (iter->second)->ilSize
 					<<std::left<< std::setw(20)<< (iter->second)->tmLastModified
 					<<std::left<< std::setw(20)<< (iter->second)->ilOffset
@@ -228,6 +228,8 @@ public:
 	STFileProcessingStatus * GetFileProcess(const char * filename)
 	{
 		STFileProcessingStatus * data = NULL;
+
+		std::cout << "文件名["  << filename << "]" << std::endl;
 
 
 		if(m_mapFileProcessingData.find(filename) != m_mapFileProcessingData.end())
