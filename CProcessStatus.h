@@ -23,6 +23,7 @@
  * */
 typedef struct ST_FileProcessingStatus
 {
+	unsigned int uiRecordMemID;
 	char szFileName[128];
 
 	time_t tmLastModified;
@@ -30,6 +31,25 @@ typedef struct ST_FileProcessingStatus
 
 	time_t tmLastProcessing;
 	off_t ilOffset;
+
+	bool IsFinished(int intval)
+	{
+		if (ilSize == ilOffset)
+		{
+			if(tmLastProcessing > tmLastModified)
+			{
+				if(intval <= (tmLastProcessing-tmLastModified))
+					return true;
+			}
+		}
+		else // 数据出现问题，修整下
+		{
+			ilOffset = 0;
+			tmLastProcessing = 0;
+		}
+
+		return false;
+	}
 
 }STFileProcessingStatus;
 
@@ -39,11 +59,26 @@ private:
 	std::map<std::string,STFileProcessingStatus *> m_mapFileProcessingData;
 
 	CLineSpaceMgr objCLineSpaceMgr;
+
+	std::string m_sDir,m_sMapFileName;
+
+	int m_iIntval;
+
+	int m_iFileMaxCount;
 public:
 
-	int Init(const std::string & dir,const std::string & hra_file_name = ".hra.processing.file",int max_file_count=100)
+	int Init(const std::string & dir,int intval=3000,const std::string & hra_file_name = ".hra.processing.file",int max_file_count=100)
 	{
-		int iRet = objCLineSpaceMgr.Init(sizeof(STFileProcessingStatus),max_file_count,hra_file_name,true);
+		m_iIntval = intval;
+
+		m_sDir = dir;
+
+		m_sMapFileName = dir + hra_file_name;
+
+		m_iFileMaxCount = max_file_count;
+
+
+		int iRet = objCLineSpaceMgr.Init(sizeof(STFileProcessingStatus),m_iFileMaxCount,m_sMapFileName,true);
 
 		if(iRet != OK)
 		{
@@ -59,15 +94,121 @@ public:
 			if(pSTFileProcessingStatus == NULL)
 				return -1;
 
-			// 到末尾了
+			pSTFileProcessingStatus->uiRecordMemID = i
+
+			// 空间释放了
 			if(pSTFileProcessingStatus->szFileName[0] == 0)
-				break;
+				continue;
 
 			m_mapFileProcessingData[pStLastDeviceData->szFileName] = pSTFileProcessingStatus;
 		}
 
 		return 0;
 
+	}
+
+	void DumpIno()
+	{
+		std::map<std::string,STFileProcessingStatus *>::iterator iter;
+
+		std::cout << "正在处理的文件列表 : \r\n "
+				"=========================================\r\n " ;
+		std::cout << std::setw(50)<< "文件名"
+					<< std::setw(12)<< "尺寸"
+					<< std::setw(12)<< "修改时间"
+					<< std::setw(12)<< "偏移量"
+					<< std::setw(12)<< "处理时间"
+					<< std::setw(12)<< "内存ID"
+					<< std::endl;
+
+
+		for(iter=m_mapFileProcessingData.begin();iter != m_mapFileProcessingData.end();iter++)
+		{
+			std::cout << std::setw(50)<< (iter->second)->szFileName
+					<< std::setw(12)<< (iter->second)->ilSize
+					<< std::setw(12)<< (iter->second)->tmLastModified
+					<< std::setw(12)<< (iter->second)->ilOffset
+					<< std::setw(12)<< (iter->second)->tmLastProcessing
+					<< std::setw(12)<< (iter->second)->uiRecordMemID
+					<< std::endl;
+		}
+
+	}
+
+	void GetDirectoryFileStatus()
+	{
+		char szCmd[1024],szRes[1024];
+		memset(szCmd,0,sizeof(szCmd));
+		memset(szRes,0,sizeof(szRes));
+
+		sprintf(szCmd,"ls -1 -t %s/%s 2>/dev/null",MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir").c_str(),
+				MyUtility::g_objCCommandLineInfo.GetArgVal("ext-name").c_str());
+
+		FILE *dl;	//list all *trans.so in fdir
+		dl = popen(szCmd, "r");
+
+		if(!dl)
+		{
+			std::cout << "查看日志上报文件列表失败： " << szCmd << std::endl;
+		}
+		else
+		{
+			while(fgets(szRes, sizeof(szRes), dl))
+			{
+				char *ws = strpbrk(szRes, " \t\n");
+				if(ws) *ws = '\0';
+
+				std::cout << "开始文件的分析 ： " << szRes <<std::endl;
+
+				// 启动线程进行文件分析，并上报
+				STFileProcessingStatus *pSTFileProcessingStatus = GetFileProcess(szRes);
+
+				if(NULL != pSTFileProcessingStatus )
+				{
+					struct stat s_buff;
+
+					int status = stat(szRes,&s_buff); //获取文件对应属
+
+					if (status == 0)
+					{
+						pSTFileProcessingStatus->tmLastModified = s_buff.st_mtime;
+						pSTFileProcessingStatus->ilSize = s_buff.st_size;
+
+						if (pSTFileProcessingStatus->ilSize < pSTFileProcessingStatus->ilOffset)
+							pSTFileProcessingStatus->ilOffset = 0;
+
+						if (pSTFileProcessingStatus->ilSize == pSTFileProcessingStatus->ilOffset)
+						{
+							// 1
+								if(pSTFileProcessingStatus->tmLastProcessing >= (pSTFileProcessingStatus->tmLastModified + m_iIntval ))
+									RemoveFile(pSTFileProcessingStatus);
+								else
+									pSTFileProcessingStatus->tmLastProcessing = time();
+							// 2
+
+
+						}
+					}
+
+				}
+
+			}
+			pclose(dl);
+		}
+
+	}
+
+	void RemoveFile(STFileProcessingStatus * file)
+	{
+		m_mapFileProcessingData.erase(file->szFileName);
+
+		remove(file->szFileName);
+
+		CPointer pt(1,file->uiRecordMemID);
+
+		objCLineSpaceMgr.Free(pt);
+
+		memset(file,0 ,sizeof(STFileProcessingStatus));
 	}
 
 	STFileProcessingStatus * GetFileProcess(const char * filename)
@@ -85,10 +226,13 @@ public:
 
 			data = (STFileProcessingStatus*) objCLineSpaceMgr.AsVoid(pt);
 
+
 			if(data != NULL)
 			{
 
 				memset(data,0,sizeof(STFileProcessingStatus));
+
+				data->uiRecordMemID = pt.m_uiOffset;
 
 				strncpy(data->szFileName,filename,sizeof(data->szFileName));
 			}
@@ -97,10 +241,10 @@ public:
 		return data;
 	}
 
-	CFileProcessingStatus(const std::string & dir,const std::string & hra_file_name = ".hra.processing.file",int max_file_count=100)
+	CFileProcessingStatus(const std::string & dir,int intval=3000,const std::string & hra_file_name = ".hra.processing.file",int max_file_count=100)
 	{
 		m_mapFileProcessingData.clear();
-		Init(dir,hra_file_name,max_file_count);
+		Init(dir,intval,hra_file_name,max_file_count);
 	}
 	~CFileProcessingStatus()
 	{

@@ -47,11 +47,12 @@ void InitCommandLine()
 {
 	MyUtility::g_objCCommandLineInfo.AddEntry("log-dir","--log-dir=","/data/healthy_report/log/",false,true,"服务健康上报日志存放目录，将分析此目录的文件并上报消息队列");
 	MyUtility::g_objCCommandLineInfo.AddEntry("ext-name","--ext-name=","*log",false,true,"服务健康上报日志的扩展名,如*log");
+	MyUtility::g_objCCommandLineInfo.AddEntry("max_file_count","--max_file_count=","100",false,true,"为");
 	MyUtility::g_objCCommandLineInfo.AddEntry("kafuka-url","--kafuka-url=","kafuka://127.0.0.1:9092/healthy_report/0",false,true,"kafuka消息队列的地址、topic名与分区号");
 	MyUtility::g_objCCommandLineInfo.AddEntry("mmap-id","--mmap-id=",".hra.processing.",false,true,"mmap文件名前缀，记录文件处理状态*file.1与统计结果*summary.1，默认1000条，不够时会自动拓展,.1,.2");
 	MyUtility::g_objCCommandLineInfo.AddEntry("summary_cycle","--summary_cycle=","300",false,true,"统计周期，按这个时间间隔汇总，单位秒，默认5分钟");
-	MyUtility::g_objCCommandLineInfo.AddEntry("eliminate-cycle-count","--eliminate-cycle-count=","10",false,true,"文件过期时间，统计周期的倍数，默认为10个");
-	MyUtility::g_objCCommandLineInfo.AddEntry("run-by-cmdline","run-by-cmdline","off",true,true,"文件过期时间，统计周期的倍数，默认为10个");
+	MyUtility::g_objCCommandLineInfo.AddEntry("eliminate-cycle","--eliminate-cycle=","600",false,true,"过期时间，处理完毕的文件如果持续时间未更新，则删除");
+	MyUtility::g_objCCommandLineInfo.AddEntry("run-by-cmdline","run-by-cmdline","off",true,true,"从命令行运行");
 
 	MyUtility::g_objCCommandLineInfo.AddEntry("cmd","--cmd=","work",false,false,
 		"work 开始分析、汇总、上报的工作  \r\n"
@@ -97,55 +98,18 @@ void SummaryAndReport()
 	CFileProcessingStatus objCFileProcessingStatus;
 
 	objCFileProcessingStatus.Init(MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir"),
+			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("eliminate-cycle")),
 			MyUtility::g_objCCommandLineInfo.GetArgVal("mmap-id"),
-			100);
+			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("max_file_count")));
 
-	char szCmd[1024],szRes[1024];
-	memset(szCmd,0,sizeof(szCmd));
-	memset(szRes,0,sizeof(szRes));
 
-	sprintf(szCmd,"ls -1 %s/%s 2>/dev/null",MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir").c_str(),
-			MyUtility::g_objCCommandLineInfo.GetArgVal("ext-name").c_str());
 
 	while(true)
 	{
-		FILE *dl;	//list all *trans.so in fdir
-		dl = popen(szCmd, "r");
-		if(!dl)
-		{
-			std::cout << "查看日志上报文件列表失败： " << szCmd << std::endl;
-		}
-		else
-		{
-			while(fgets(szRes, sizeof(szRes), dl))
-			{
-				char *ws = strpbrk(szRes, " \t\n");
-				if(ws) *ws = '\0';
+		// 加载待处理的文件列表
+		objCFileProcessingStatus.GetDirectoryFileStatus();
 
-				std::cout << "开始文件的分析 ： " << szRes <<std::endl;
-
-				// 启动线程进行文件分析，并上报
-				STFileProcessingStatus *pSTFileProcessingStatus = objCFileProcessingStatus.GetFileProcess(szRes);
-
-				if(NULL != pSTFileProcessingStatus )
-				{
-					struct stat s_buff;
-
-					int status = stat(szRes,&s_buff); //获取文件对应属
-
-					if (status == 0)
-					{
-						pSTFileProcessingStatus->tmLastModified = s_buff.st_mtime;
-						pSTFileProcessingStatus->ilSize = s_buff.st_size;
-
-
-					}
-
-				}
-
-			}
-			pclose(dl);
-		}
+		// 遍历文件列表，并统计
 
 		sleep(1); // 间隔1秒，继续扫描目录里面的文件变化
 	}
