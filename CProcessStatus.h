@@ -1,7 +1,7 @@
-/*
+ï»¿/*
  * CProcessStatus.h
  *
- *  Created on: 2018Äê4ÔÂ17ÈÕ
+ *  Created on: 2018å¹´4æœˆ17æ—¥
  *      Author: Administrator
  */
 
@@ -20,7 +20,7 @@
 
 
 /*
- * ÎÄ¼ş´¦ÀíµÄ½øÕ¹
+ * æ–‡ä»¶å¤„ç†çš„è¿›å±•
  * */
 typedef struct ST_FileProcessingStatus
 {
@@ -43,7 +43,7 @@ typedef struct ST_FileProcessingStatus
 					return true;
 			}
 		}
-		else // Êı¾İ³öÏÖÎÊÌâ£¬ĞŞÕûÏÂ
+		else // æ•°æ®å‡ºç°é—®é¢˜ï¼Œä¿®æ•´ä¸‹
 		{
 			ilOffset = 0;
 			tmLastProcessing = 0;
@@ -86,18 +86,18 @@ public:
 			return -1;
 		}
 
-		// ±éÀú ,½¨Á¢ÎÄ¼şÃûµ½ÎÄ¼şÏà¹Ø´¦Àí×´Ì¬µÄÊı¾İ
+		// éå† ,å»ºç«‹æ–‡ä»¶ååˆ°æ–‡ä»¶ç›¸å…³å¤„ç†çŠ¶æ€çš„æ•°æ®
 		for(int i=0;i<objCLineSpaceMgr.GetSize();i++)
 		{
 			STFileProcessingStatus *pSTFileProcessingStatus = (STFileProcessingStatus*) objCLineSpaceMgr.AsVoid(CPointer(1,i));
 
-			// ÏµÍ³´íÎó
+			// ç³»ç»Ÿé”™è¯¯
 			if(pSTFileProcessingStatus == NULL)
 				return -1;
 
 			pSTFileProcessingStatus->uiRecordMemID = i;
 
-			// ¿Õ¼äÊÍ·ÅÁË
+			// ç©ºé—´é‡Šæ”¾äº†
 			if(pSTFileProcessingStatus->szFileName[0] == 0)
 				continue;
 
@@ -112,14 +112,14 @@ public:
 	{
 		std::map<std::string,STFileProcessingStatus *>::iterator iter;
 
-		std::cout << "ÕıÔÚ´¦ÀíµÄÎÄ¼şÁĞ±í : \r\n "
+		std::cout << "æ­£åœ¨å¤„ç†çš„æ–‡ä»¶åˆ—è¡¨ : \r\n "
 				"=========================================\r\n " ;
-		std::cout << std::setw(50)<< "ÎÄ¼şÃû"
-					<< std::setw(12)<< "³ß´ç"
-					<< std::setw(12)<< "ĞŞ¸ÄÊ±¼ä"
-					<< std::setw(12)<< "Æ«ÒÆÁ¿"
-					<< std::setw(12)<< "´¦ÀíÊ±¼ä"
-					<< std::setw(12)<< "ÄÚ´æID"
+		std::cout << std::setw(50)<< "æ–‡ä»¶å"
+					<< std::setw(12)<< "å°ºå¯¸"
+					<< std::setw(12)<< "ä¿®æ”¹æ—¶é—´"
+					<< std::setw(12)<< "åç§»é‡"
+					<< std::setw(12)<< "å¤„ç†æ—¶é—´"
+					<< std::setw(12)<< "å†…å­˜ID"
 					<< std::endl;
 
 
@@ -150,7 +150,7 @@ public:
 
 		if(!dl)
 		{
-			std::cout << "²é¿´ÈÕÖ¾ÉÏ±¨ÎÄ¼şÁĞ±íÊ§°Ü£º " << szCmd << std::endl;
+			std::cout << "æŸ¥çœ‹æ—¥å¿—ä¸ŠæŠ¥æ–‡ä»¶åˆ—è¡¨å¤±è´¥ï¼š " << szCmd << std::endl;
 		}
 		else
 		{
@@ -159,16 +159,16 @@ public:
 				char *ws = strpbrk(szRes, " \t\n");
 				if(ws) *ws = '\0';
 
-				std::cout << "¿ªÊ¼ÎÄ¼şµÄ·ÖÎö £º " << szRes <<std::endl;
+				std::cout << "å¼€å§‹æ–‡ä»¶çš„åˆ†æ ï¼š " << szRes <<std::endl;
 
-				// Æô¶¯Ïß³Ì½øĞĞÎÄ¼ş·ÖÎö£¬²¢ÉÏ±¨
+				// å¯åŠ¨çº¿ç¨‹è¿›è¡Œæ–‡ä»¶åˆ†æï¼Œå¹¶ä¸ŠæŠ¥
 				STFileProcessingStatus *pSTFileProcessingStatus = GetFileProcess(szRes);
 
 				if(NULL != pSTFileProcessingStatus )
 				{
 					struct stat s_buff;
 
-					int status = stat(szRes,&s_buff); //»ñÈ¡ÎÄ¼ş¶ÔÓ¦Êô
+					int status = stat(szRes,&s_buff); //è·å–æ–‡ä»¶å¯¹åº”å±
 
 					if (status == 0)
 					{
@@ -258,11 +258,11 @@ public:
 };
 
 /*
- * »ıÀÛµÄ½«ÒªÉÏ±¨µÄÊı¾İ
+ * ç§¯ç´¯çš„å°†è¦ä¸ŠæŠ¥çš„æ•°æ®
  * */
 typedef struct ST_SummaryRecode
 {
-	time_t tmPeriod; // Ê±¼ä·¶Î§£º°´Éè¶¨µÄÍ³¼ÆÊ±¼ä£¬Èç¹ûÊÇ5·ÖÖÓ£¬ÔòÈ¡5·ÖÖÓ·Ö¶ÎµÄ¿ªÊ¼Ê±¼ä
+	time_t tmPeriod; // æ—¶é—´èŒƒå›´ï¼šæŒ‰è®¾å®šçš„ç»Ÿè®¡æ—¶é—´ï¼Œå¦‚æœæ˜¯5åˆ†é’Ÿï¼Œåˆ™å–5åˆ†é’Ÿåˆ†æ®µçš„å¼€å§‹æ—¶é—´
 
 	char cVer;
 	char szCaller[64];
@@ -280,7 +280,7 @@ typedef struct ST_SummaryRecode
 	unsigned int uiMinTime;
 	unsigned int uiAvgTime;
 
-	char cStatus;  // 0 Í³¼ÆÖĞ£¬1 Í³¼ÆÍê±Ï £¬2 ÉÏ±¨Íê±Ï
+	char cStatus;  // 0 ç»Ÿè®¡ä¸­ï¼Œ1 ç»Ÿè®¡å®Œæ¯• ï¼Œ2 ä¸ŠæŠ¥å®Œæ¯•
 
 
 }STSummaryRecode;
