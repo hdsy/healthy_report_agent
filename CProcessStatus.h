@@ -277,7 +277,7 @@ public:
 	}
 	CFileProcessingStatus()
 	{
-
+		std::cout << "构造文件进度对象 ：" << time(NULL) <<std::endl;
 	}
 };
 
