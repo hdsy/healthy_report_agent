@@ -80,9 +80,11 @@ public:
 
 		size_t szStruct = sizeof(STFileProcessingStatus);  
 
+		std::cout << "初始化共享内存 ： " << m_sMapFileName << std::endl;
 
 		if( OK != objCLineSpaceMgr.Init(szStruct,m_iFileMaxCount,m_sMapFileName.c_str(),true) )
 		{
+			std::cout << "初始化共享内存 ： " << m_sMapFileName << "失败." << std::endl;
 			return -1;
 		}
 
