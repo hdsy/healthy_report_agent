@@ -1,7 +1,10 @@
 PROJECT_ROOT = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-CPPFLAGS += -I../public/utility/
-LDFLAGS += -L../public/utility/ -lutility
+CPPFLAGS += -I../public/utility/ \
+	-I../public/linespm/ 
+	
+LDFLAGS += -L../public/utility/ -lutility \
+	-L../public/utility/ -llinespm
 
 OBJS = healthy_report_agent.o
 
