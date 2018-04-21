@@ -4,7 +4,7 @@ CPPFLAGS += -I../public/utility/ \
 	-I../public/linespm/ 
 	
 LDFLAGS += -L../public/utility/ -lutility \
-	-L../public/utility/ -llinespm
+	-L../public/linespm/ -llinespm
 
 OBJS = healthy_report_agent.o
 
