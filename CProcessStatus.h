@@ -114,8 +114,7 @@ public:
 	{
 		std::map<std::string,STFileProcessingStatus *>::iterator iter;
 
-		std::cout << "正在处理的文件列表 : \r\n "
-				"\r\n=========================================\r\n " ;
+		std::cout << "正在处理的文件列表 : \r\n =========================================\r\n " ;
 		std::cout
 				<<std::left << std::setw(50)<< "文件名"
 				<<std::left << std::setw(20)<< "尺寸"
@@ -163,7 +162,7 @@ public:
 				char *ws = strpbrk(szRes, " \t\n");
 				if(ws) *ws = '\0';
 
-				std::cout << "开始文件的分析 ： " << szRes <<std::endl;
+
 
 				// 启动线程进行文件分析，并上报
 				STFileProcessingStatus *pSTFileProcessingStatus = GetFileProcess(szRes);
@@ -193,8 +192,18 @@ public:
 
 
 						}
+						std::cout << "记录文件处理进度 ： " << szRes <<std::endl;
+					}
+					else
+					{
+
+						std::cout << "获取文件信息失败 ： " << szRes <<std::endl;
 					}
 
+				}
+				else
+				{
+					std::cout << "没有足够的空间记录文件的进程 ： " << szRes <<std::endl;
 				}
 
 			}
