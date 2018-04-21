@@ -99,6 +99,15 @@ public:
 
 			pSTFileProcessingStatus->uiRecordMemID = i;
 
+			std::cout
+								<<std::left<< std::setw(50) << pSTFileProcessingStatus->szFileName
+								<<std::left<< std::setw(20)<< pSTFileProcessingStatus->ilSize
+								<<std::left<< std::setw(20)<< pSTFileProcessingStatus->tmLastModified
+								<<std::left<< std::setw(20)<< pSTFileProcessingStatus->ilOffset
+								<<std::left<< std::setw(20)<< pSTFileProcessingStatus->tmLastProcessing
+								<<std::left<< std::setw(20)<< pSTFileProcessingStatus->uiRecordMemID
+								<<std::left<< std::endl;
+
 			// 空间释放了
 			if(pSTFileProcessingStatus->szFileName[0] == 0)
 				continue;
@@ -128,7 +137,7 @@ public:
 		for(iter=m_mapFileProcessingData.begin();iter != m_mapFileProcessingData.end();iter++)
 		{
 			std::cout
-					<<std::left<< std::setw(50)<< "[" << (iter->second)->szFileName << "]"
+					<<std::left<< std::setw(50) << (iter->second)->szFileName
 					<<std::left<< std::setw(20)<< (iter->second)->ilSize
 					<<std::left<< std::setw(20)<< (iter->second)->tmLastModified
 					<<std::left<< std::setw(20)<< (iter->second)->ilOffset
