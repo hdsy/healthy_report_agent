@@ -110,6 +110,7 @@ void SummaryAndReport()
 			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("max_file_count")));
 
 
+	std::cout << "开始列表文件并分析 " << time(NULL) << std::endl;
 
 	while(true)
 	{
@@ -118,7 +119,7 @@ void SummaryAndReport()
 
 		// 遍历文件列表，并统计
 
-		sleep(1); // 间隔1秒，继续扫描目录里面的文件变化
+		sleep(10); // 间隔1秒，继续扫描目录里面的文件变化
 	}
 
 
