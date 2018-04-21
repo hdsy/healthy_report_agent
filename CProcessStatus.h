@@ -16,6 +16,7 @@
 #include <map>
 
 #include "CLineSpaceMgr.h"
+#include "CBaseEncode.h"
 
 
 /*
@@ -77,12 +78,12 @@ public:
 
 		m_iFileMaxCount = max_file_count;
 
+		size_t szStruct = sizeof(STFileProcessingStatus);  
 
-		int iRet = objCLineSpaceMgr.Init(sizeof(STFileProcessingStatus),m_iFileMaxCount,m_sMapFileName,true);
 
-		if(iRet != OK)
+		if( OK != objCLineSpaceMgr.Init(szStruct,m_iFileMaxCount,m_sMapFileName.c_str(),true) )
 		{
-			return iRet;
+			return -1;
 		}
 
 		// 遍历 ,建立文件名到文件相关处理状态的数据
@@ -94,13 +95,13 @@ public:
 			if(pSTFileProcessingStatus == NULL)
 				return -1;
 
-			pSTFileProcessingStatus->uiRecordMemID = i
+			pSTFileProcessingStatus->uiRecordMemID = i;
 
 			// 空间释放了
 			if(pSTFileProcessingStatus->szFileName[0] == 0)
 				continue;
 
-			m_mapFileProcessingData[pStLastDeviceData->szFileName] = pSTFileProcessingStatus;
+			m_mapFileProcessingData[pSTFileProcessingStatus->szFileName] = pSTFileProcessingStatus;
 		}
 
 		return 0;
@@ -183,7 +184,7 @@ public:
 								if(pSTFileProcessingStatus->tmLastProcessing >= (pSTFileProcessingStatus->tmLastModified + m_iIntval ))
 									RemoveFile(pSTFileProcessingStatus);
 								else
-									pSTFileProcessingStatus->tmLastProcessing = time();
+									pSTFileProcessingStatus->tmLastProcessing = time(NULL);
 							// 2
 
 
@@ -250,6 +251,10 @@ public:
 	{
 
 	}
+	CFileProcessingStatus()
+	{
+
+	}
 };
 
 /*
@@ -264,8 +269,8 @@ typedef struct ST_SummaryRecode
 	char szCallerNodeIp[30];
 
 	char szCallee[64];
-	char szCallerNodeIp[30];
-	char szCallerNodePort[6];
+	char szCalleeNodeIp[30];
+	char szCalleeNodePort[6];
 
 	int iRetcode;
 
