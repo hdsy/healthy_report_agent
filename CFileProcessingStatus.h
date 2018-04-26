@@ -5,8 +5,8 @@
  *      Author: Administrator
  */
 
-#ifndef CPROCESSSTATUS_H_
-#define CPROCESSSTATUS_H_
+#ifndef CFILEPROCESSINGSTATUS_H_
+#define CFILEPROCESSINGSTATUS_H_
 
 #include <time.h>
 #include <sys/types.h>
@@ -123,7 +123,8 @@ public:
 	{
 		std::map<std::string,STFileProcessingStatus *>::iterator iter;
 
-		std::cout << "正在处理的文件列表 : \r\n =========================================\r\n " ;
+		std::cout << "正在处理的文件列表 : \r\n =========================================\r\n "
+				<< "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" ;
 		std::cout
 				<<std::left << std::setw(50)<< "文件名"
 				<<std::left << std::setw(20)<< "尺寸"
@@ -320,10 +321,11 @@ typedef struct ST_SummaryRecode
 
 }STSummaryRecode;
 
-class CProcessStatus {
+class CSummaryRecode
+{
 public:
-	CProcessStatus();
-	virtual ~CProcessStatus();
+	SummaryRecode();
+	virtual ~SummaryRecode();
 };
 
-#endif /* CPROCESSSTATUS_H_ */
+#endif /* CFILEPROCESSINGSTATUS_H_ */

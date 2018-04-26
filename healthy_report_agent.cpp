@@ -39,9 +39,9 @@
 #include "CCommandLineInfo.h"
 #include "CUnixFileLock.h"
 
-#include "CProcessStatus.h"
-
 #include <sys/stat.h>
+#include "CFileProcessingStatus.h"
+#include "CSummaryRecode.h"
 
 void InitCommandLine()
 {
