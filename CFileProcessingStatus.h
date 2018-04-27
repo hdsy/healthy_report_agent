@@ -293,39 +293,6 @@ public:
 	}
 };
 
-/*
- * 积累的将要上报的数据
- * */
-typedef struct ST_SummaryRecode
-{
-	time_t tmPeriod; // 时间范围：按设定的统计时间，如果是5分钟，则取5分钟分段的开始时间
 
-	char cVer;
-	char szCaller[64];
-	char szCallerNodeIp[30];
-
-	char szCallee[64];
-	char szCalleeNodeIp[30];
-	char szCalleeNodePort[6];
-
-	int iRetcode;
-
-	unsigned int uiCount;
-
-	unsigned int uiMaxTime;
-	unsigned int uiMinTime;
-	unsigned int uiAvgTime;
-
-	char cStatus;  // 0 统计中，1 统计完毕 ，2 上报完毕
-
-
-}STSummaryRecode;
-
-class CSummaryRecode
-{
-public:
-	SummaryRecode();
-	virtual ~SummaryRecode();
-};
 
 #endif /* CFILEPROCESSINGSTATUS_H_ */
