@@ -119,19 +119,19 @@ public:
 
 	}
 
-	void DumpIno()
+	void DumpInfo()
 	{
 		std::map<std::string,STFileProcessingStatus *>::iterator iter;
 
-		std::cout << "正在处理的文件列表 : \r\n =========================================\r\n "
-				<< "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" ;
+		std::cout << "On processing file list : \r\n =========================================\r\n "
+				<< "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890\r\n" ;
 		std::cout
-				<<std::left << std::setw(50)<< "文件名"
-				<<std::left << std::setw(20)<< "尺寸"
-				<<std::left << std::setw(20)<< "修改时间"
-				<<std::left << std::setw(20)<< "偏移量"
-				<<std::left << std::setw(20)<< "处理时间"
-				<<std::left << std::setw(20)<< "内存ID"
+				<<std::left << std::setw(50)<< "File Path"
+				<<std::left << std::setw(20)<< "Size"
+				<<std::left << std::setw(20)<< "Last Modify Time"
+				<<std::left << std::setw(20)<< "Handled Offset"
+				<<std::left << std::setw(20)<< "Handled Time"
+				<<std::left << std::setw(20)<< "Memory ID"
 				<<std::left << std::endl;
 
 
@@ -235,6 +235,21 @@ public:
 		objCLineSpaceMgr.Free(pt);
 
 		memset(file,0 ,sizeof(STFileProcessingStatus));
+	}
+
+	// 取文件，只到空
+	STFileProcessingStatus* GetFileProcess()
+	{
+
+		std::map<std::string,STFileProcessingStatus *>::iterator iter;
+
+		for(iter=m_mapFileProcessingData.begin();iter != m_mapFileProcessingData.end();iter++)
+		{
+			if ((iter->second)->ilOffset < (iter->second)->ilSize)
+				return (iter->second);
+		}
+
+		return NULL;
 	}
 
 	STFileProcessingStatus * GetFileProcess(const char * filename)

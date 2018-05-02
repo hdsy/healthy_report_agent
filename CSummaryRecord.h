@@ -1,12 +1,12 @@
 /*
- * CSummaryRecode.h
+ * CSummaryRecord.h
  *
  *  Created on: 2018年4月25日
  *      Author: Administrator
  */
 
-#ifndef CSUMMARYRECODE_H_
-#define CSUMMARYRECODE_H_
+#ifndef CSummaryRecord_H_
+#define CSummaryRecord_H_
 
 #include <time.h>
 #include <sys/types.h>
@@ -15,14 +15,20 @@
 #include <string>
 #include <map>
 
+
+#include <iostream>     // std::cout
+#include <fstream>      // std::ifstream
+
 #include "CLineSpaceMgr.h"
 #include "CBaseEncode.h"
+
+#include "CFileProcessingStatus.h"
 
 
 /*
  * 积累的将要上报的数据
  * */
-typedef struct ST_SummaryRecode
+typedef struct ST_SummaryRecord
 {
 	unsigned int uiRecordMemID;
 	time_t tmPeriod; // 时间范围：按设定的统计时间，如果是5分钟，则取5分钟分段的开始时间
@@ -47,15 +53,15 @@ typedef struct ST_SummaryRecode
 
 	char cStatus;  // 0 统计中，1 统计完毕 ，2 上报完毕
 
-	inline std::string GetRecordID()
+	inline std::string GetRecordID() const
 	{
 		std::string res = "";
 
-		res = res + szCaller
-				+ szCallerNodeIp
-				+ szCallee
-				+ szCalleeNodeIp
-				+ szCalleeNodePort
+		res = res + szCaller +"|"
+				+ szCallerNodeIp +"|"
+				+ szCallee +"|"
+				+ szCalleeNodeIp +"|"
+				+ szCalleeNodePort +"|"
 				+ MyUtility::CBaseEncode::IntToString(iRetcode);
 
 
@@ -94,40 +100,33 @@ typedef struct ST_SummaryRecode
 
 			iRetcode = MyUtility::CBaseCode::StringToInt( stringVect.at(6));
 			uiAvgTime = MyUtility::CBaseCode::StringToInt( stringVect.at(7));
+			uiMinTime = uiMaxTime = uiAvgTime;
 		}
 		default:
 			return -2;// 不支持的版本
-		}
-
-		for(int i=0;i<stringVect.size();i++)
-		{
-
 		}
 
 		return 0;
 	}
 
 
-	ST_SummaryRecode()
+	ST_SummaryRecord()
 	{
 
 	}
-	ST_SummaryRecode(const char * str,int period)
+	ST_SummaryRecord(const char * str,int period)
 	{
 		Parse(str,period);
-
-
-
 	}
 
 
 
-}STSummaryRecode;
+}STSummaryRecord;
 
-class CSummaryRecode
+class CSummaryRecord
 {
 private:
-	std::map<std::string,STSummaryRecode *> m_mapSummaryRecode;
+	std::map<std::string,STSummaryRecord *> m_mapSummaryRecord;
 
 	CLineSpaceMgr objCLineSpaceMgr;
 
@@ -140,8 +139,8 @@ private:
 
 
 public:
-	SummaryRecode(){};
-	virtual ~SummaryRecode(){};
+	SummaryRecord(){};
+	virtual ~SummaryRecord(){};
 
 	int Init(const std::string & dir,int intval=300,const std::string & hra_file_name = ".hra.processing.recode",int max_count=1000)
 		{
@@ -153,7 +152,7 @@ public:
 
 			m_iRecordMaxCount = max_count;
 
-			size_t szStruct = sizeof(STSummaryRecode);
+			size_t szStruct = sizeof(STSummaryRecord);
 
 			std::cout << "初始化共享内存 ： " << m_sMapFileName << std::endl;
 
@@ -166,44 +165,44 @@ public:
 			// 遍历 ,建立统计周期内调用关系与返回码到记录数据的信息
 			for(int i=0;i<objCLineSpaceMgr.GetSize();i++)
 			{
-				STSummaryRecode *pSTSummaryRecode = (STSummaryRecode*) objCLineSpaceMgr.AsVoid(CPointer(1,i));
+				STSummaryRecord *pSTSummaryRecord = (STSummaryRecord*) objCLineSpaceMgr.AsVoid(CPointer(1,i));
 
 				// 系统错误
-				if(pSTSummaryRecode == NULL)
+				if(pSTSummaryRecord == NULL)
 					return -1;
 
-				pSTSummaryRecode->uiRecordMemID = i;
+				pSTSummaryRecord->uiRecordMemID = i;
 	/**/
 				std::cout
-									<<std::left<< std::setw(20)<< pSTSummaryRecode->uiRecordMemID
-									<<std::left<< std::setw(20)<< pSTSummaryRecode->cVer
-									<<std::left<< std::setw(20)<< pSTSummaryRecode->tmPeriod
-									<<std::left<< std::setw(50) << pSTSummaryRecode->szCaller
-									<<std::left<< std::setw(20)<< pSTSummaryRecode->szCallerNodeIp
-									<<std::left<< std::setw(20)<< pSTSummaryRecode->szCallee
-									<<std::left<< std::setw(20)<< pSTSummaryRecode->szCalleeNodeIp
-									<<std::left<< std::setw(20)<< pSTSummaryRecode->szCalleeNodePort
-									<<std::left<< std::setw(20)<< pSTSummaryRecode->iRetcode
-									<<std::left<< std::setw(20)<< pSTSummaryRecode->uiCount
-									<<std::left<< std::setw(20)<< pSTSummaryRecode->uiAvgTime
-									<<std::left<< std::setw(20)<< pSTSummaryRecode->uiMaxTime
-									<<std::left<< std::setw(20)<< pSTSummaryRecode->uiMinTime
-									<<std::left<< std::endl;
+						<<std::left<< std::setw(20)<< pSTSummaryRecord->uiRecordMemID
+						<<std::left<< std::setw(20)<< pSTSummaryRecord->cVer
+						<<std::left<< std::setw(20)<< pSTSummaryRecord->tmPeriod
+						<<std::left<< std::setw(50) << pSTSummaryRecord->szCaller
+						<<std::left<< std::setw(20)<< pSTSummaryRecord->szCallerNodeIp
+						<<std::left<< std::setw(20)<< pSTSummaryRecord->szCallee
+						<<std::left<< std::setw(20)<< pSTSummaryRecord->szCalleeNodeIp
+						<<std::left<< std::setw(20)<< pSTSummaryRecord->szCalleeNodePort
+						<<std::left<< std::setw(20)<< pSTSummaryRecord->iRetcode
+						<<std::left<< std::setw(20)<< pSTSummaryRecord->uiCount
+						<<std::left<< std::setw(20)<< pSTSummaryRecord->uiAvgTime
+						<<std::left<< std::setw(20)<< pSTSummaryRecord->uiMaxTime
+						<<std::left<< std::setw(20)<< pSTSummaryRecord->uiMinTime
+						<<std::left<< std::endl;
 
 				// 空间释放了
-				if(pSTSummaryRecode->szCaller[0] == 0)
+				if(pSTSummaryRecord->szCaller[0] == 0)
 					continue;
 
-				m_mapSummaryRecode[pSTSummaryRecode->GetRecordID()] = pSTSummaryRecode;
+				m_mapSummaryRecord[pSTSummaryRecord->GetRecordID()] = pSTSummaryRecord;
 			}
 
 			return 0;
 
 		}
 
-		void DumpIno()
+		void DumpInfo()
 		{
-			std::map<std::string,STFileProcessingStatus *>::iterator iter;
+			std::map<std::string,STSummaryRecord *>::iterator iter;
 
 			std::cout << "正在汇总的统计记录: \r\n =========================================\r\n "
 					<< "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" ;
@@ -244,8 +243,92 @@ public:
 			}
 
 		}
+
+		STSummaryRecord * GetSummaryRecord(const STSummaryRecord * objSTSummaryRecord)
+		{
+			STSummaryRecord * data = NULL;
+
+			if(m_mapSummaryRecord.find(objSTSummaryRecord->GetRecordID()) != m_mapSummaryRecord.end())
+			{
+				data = m_mapSummaryRecord[objSTSummaryRecord->GetRecordID()];
+
+				data->uiAvgTime = data->uiCount/(data->uiCount+1) * data->uiAvgTime + objSTSummaryRecord->uiAvgTime /(data->uiCount+1)
+
+				if(data->uiMinTime > objSTSummaryRecord->uiAvgTime)
+					data->uiMinTime = objSTSummaryRecord->uiAvgTime;
+				if(data->uiMaxTime < objSTSummaryRecord->uiAvgTime)
+					data->uiMaxTime = objSTSummaryRecord->uiAvgTime;
+				data->uiCount++;
+
+			}
+			else
+			{
+				CPointer pt = objCLineSpaceMgr.Alloc();
+
+				data = (STSummaryRecord*) objCLineSpaceMgr.AsVoid(pt);
+
+
+				if(data != NULL)
+				{
+
+					memcpy(data,objSTSummaryRecord,sizeof(STSummaryRecord));
+
+
+					data->uiRecordMemID = pt.m_uiOffset;
+
+
+					m_mapSummaryRecord[objSTSummaryRecord->GetRecordID()] = data;
+
+
+				}
+			}
+
+			return data;
+		}
+
+		void Parse(STFileProcessingStatus * pSTFile)
+		{
+			std::ifstream ifs (pSTFile->szFileName, std::ifstream::in);
+
+			ifs.seekg (pSTFile->ilOffset);
+
+			string itemline = "";
+
+			while(true)
+			{
+				getline(ifs, itemline);
+				if(itemline == "" || itemline.length() <= 1)
+				{
+					break;
+				}
+
+				pSTFile->ilOffset = ifs.tellg();
+
+				if(itemline.length() < 20 || itemline.length() > 800)
+				{
+					continue;
+				}
+
+
+				STSummaryRecord objSTSummaryRecord;
+
+				if(0 == objSTSummaryRecord.Parse(itemline.c_str(),m_iIntval))
+				{
+					if(NULL != GetSummaryRecord(&objSTSummaryRecord))
+					{
+						std::cout << "获取统计记录失败：" << objSTSummaryRecord.GetRecordID() << std::endl;
+					}
+				}
+				else
+				{
+					std::cout << "解析行失败：" << itemline << std::endl;
+				}
+			}
+
+			ifs.close();
+		}
 };
 
 
 
-#endif /* CSUMMARYRECODE_H_ */
+#endif /* CSummaryRecord_H_ */

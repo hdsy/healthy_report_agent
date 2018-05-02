@@ -41,7 +41,7 @@
 
 #include <sys/stat.h>
 #include "CFileProcessingStatus.h"
-#include "CSummaryRecode.h"
+#include "CSummaryRecord.h"
 
 void InitCommandLine()
 {
@@ -73,7 +73,17 @@ void WatchProcessing()
 			MyUtility::g_objCCommandLineInfo.GetArgVal("mmap-id"),
 			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("max_file_count")));
 
-	objCFileProcessingStatus.DumpIno();
+	objCFileProcessingStatus.DumpInfo();
+
+
+	CSummaryRecord objCSummaryRecord;
+
+	objCSummaryRecord.Init(MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir"),
+			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("summary_cycle")),
+			MyUtility::g_objCCommandLineInfo.GetArgVal("mmap-id")+".record",
+			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("max_file_count"))*100);
+
+	objCSummaryRecord.DumpIno();
 
 }
 
@@ -106,9 +116,16 @@ void SummaryAndReport()
 
 	objCFileProcessingStatus.Init(MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir"),
 			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("eliminate-cycle")),
-			MyUtility::g_objCCommandLineInfo.GetArgVal("mmap-id"),
+			MyUtility::g_objCCommandLineInfo.GetArgVal("mmap-id")+".file",
 			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("max_file_count")));
 
+	// (const std::string & dir,int intval=300,const std::string & hra_file_name = ".hra.processing.recode",int max_count=1000)
+	CSummaryRecord objCSummaryRecord;
+
+	objCSummaryRecord.Init(MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir"),
+			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("summary_cycle")),
+			MyUtility::g_objCCommandLineInfo.GetArgVal("mmap-id")+".record",
+			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("max_file_count"))*100);
 
 	std::cout << "开始列表文件并分析 " << time(NULL) << std::endl;
 
@@ -118,6 +135,23 @@ void SummaryAndReport()
 		objCFileProcessingStatus.GetDirectoryFileStatus();
 
 		// 遍历文件列表，并统计
+
+		STFileProcessingStatus *pCurFile = NULL;
+
+		do
+		{
+			pCurFile = objCFileProcessingStatus.GetFileProcess();
+
+			if(pCurFile == NULL)
+				break;
+
+			// 打开文件并分析
+			objCSummaryRecord.Parse(pCurFile);
+
+
+
+		}
+		while(NULL != pCurFile )
 
 		sleep(1); // 间隔1秒，继续扫描目录里面的文件变化
 	}
