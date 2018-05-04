@@ -142,7 +142,10 @@ private:
 
 
 public:
-	CSummaryRecord(){};
+	CSummaryRecord()
+	{
+		std::cout << "构造统计记录对象 ：" << time(NULL) <<std::endl;
+	};
 
 	virtual ~CSummaryRecord(){};
 
