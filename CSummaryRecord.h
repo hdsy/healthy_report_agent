@@ -57,7 +57,9 @@ typedef struct ST_SummaryRecord
 	{
 		std::string res = "";
 
-		res = res + szCaller +"|"
+		res = res +
+				MyUtility::CBaseEncode::UIntToString(tmPeriod) + "|"
+				+ szCaller +"|"
 				+ szCallerNodeIp +"|"
 				+ szCallee +"|"
 				+ szCalleeNodeIp +"|"
