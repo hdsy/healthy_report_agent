@@ -104,6 +104,7 @@ typedef struct ST_SummaryRecord
 			uiMinTime = uiMaxTime = uiAvgTime;
 		}
 		default:
+			std::cout << stringVect.at(0).at(0) << ":" << stringVect.at(0) << std::endle;
 			return -2;// 不支持的版本
 		}
 
