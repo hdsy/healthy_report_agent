@@ -215,10 +215,10 @@ public:
 				<<std::left<< std::setw(5)<< "Ver"
 				<<std::left<< std::setw(11)<< "Time"
 				<<std::left<< std::setw(20) << "CallerID"
-				<<std::left<< std::setw(20)<< "CallerNode"
+				<<std::left<< std::setw(16)<< "1IP"
 				<<std::left<< std::setw(20)<< "CalleeID"
-				<<std::left<< std::setw(20)<< "CalleeIP"
-				<<std::left<< std::setw(20)<< "CalleePORT"
+				<<std::left<< std::setw(16)<< "2IP"
+				<<std::left<< std::setw(6)<< "2Port"
 				<<std::left<< std::setw(8)<< "Retcode"
 				<<std::left<< std::setw(11)<< "Count"
 				<<std::left<< std::setw(6)<< "Avg"
@@ -230,19 +230,19 @@ public:
 			for(iter=m_mapSummaryRecord.begin();iter != m_mapSummaryRecord.end();iter++)
 			{
 				std::cout
-						<<std::left<< std::setw(20)<< (iter->second)->uiRecordMemID
-						<<std::left<< std::setw(20)<< (iter->second)->cVer
-						<<std::left<< std::setw(20)<< (iter->second)->tmPeriod
-						<<std::left<< std::setw(50) << (iter->second)->szCaller
+						<<std::left<< std::setw(6)<< (iter->second)->uiRecordMemID
+						<<std::left<< std::setw(5)<< (iter->second)->cVer
+						<<std::left<< std::setw(11)<< (iter->second)->tmPeriod
+						<<std::left<< std::setw(20) << (iter->second)->szCaller
 						<<std::left<< std::setw(20)<< (iter->second)->szCallerNodeIp
 						<<std::left<< std::setw(20)<< (iter->second)->szCallee
-						<<std::left<< std::setw(20)<< (iter->second)->szCalleeNodeIp
-						<<std::left<< std::setw(20)<< (iter->second)->szCalleeNodePort
-						<<std::left<< std::setw(20)<< (iter->second)->iRetcode
-						<<std::left<< std::setw(20)<< (iter->second)->uiCount
-						<<std::left<< std::setw(20)<< (iter->second)->uiAvgTime
-						<<std::left<< std::setw(20)<< (iter->second)->uiMaxTime
-						<<std::left<< std::setw(20)<< (iter->second)->uiMinTime
+						<<std::left<< std::setw(16)<< (iter->second)->szCalleeNodeIp
+						<<std::left<< std::setw(6)<< (iter->second)->szCalleeNodePort
+						<<std::left<< std::setw(8)<< (iter->second)->iRetcode
+						<<std::left<< std::setw(11)<< (iter->second)->uiCount
+						<<std::left<< std::setw(6)<< (iter->second)->uiAvgTime
+						<<std::left<< std::setw(6)<< (iter->second)->uiMaxTime
+						<<std::left<< std::setw(6)<< (iter->second)->uiMinTime
 						<<std::left<< std::endl;
 			}
 
