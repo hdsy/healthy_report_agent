@@ -314,7 +314,7 @@ public:
 
 				STSummaryRecord objSTSummaryRecord;
 
-				int iRet = objSTSummaryRecord.Parse(itemline.c_str(),m_iIntval)
+				int iRet = objSTSummaryRecord.Parse(itemline.c_str(),m_iIntval);
 
 				if(0 == iRet)
 				{
