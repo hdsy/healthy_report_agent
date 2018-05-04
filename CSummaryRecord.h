@@ -234,7 +234,7 @@ public:
 						<<std::left<< std::setw(5)<< (iter->second)->cVer
 						<<std::left<< std::setw(11)<< (iter->second)->tmPeriod
 						<<std::left<< std::setw(20) << (iter->second)->szCaller
-						<<std::left<< std::setw(20)<< (iter->second)->szCallerNodeIp
+						<<std::left<< std::setw(16)<< (iter->second)->szCallerNodeIp
 						<<std::left<< std::setw(20)<< (iter->second)->szCallee
 						<<std::left<< std::setw(16)<< (iter->second)->szCalleeNodeIp
 						<<std::left<< std::setw(6)<< (iter->second)->szCalleeNodePort
