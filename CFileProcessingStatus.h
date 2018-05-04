@@ -202,7 +202,7 @@ public:
 
 
 							}
-							std::cout << "记录文件处理进度 ： [" << szRes <<"]" <<std::endl;
+							//std::cout << "记录文件处理进度 ： [" << szRes <<"]" <<std::endl;
 					}
 					else
 					{
@@ -265,7 +265,7 @@ public:
 
 			data = m_mapFileProcessingData[filename];
 
-			std::cout << "文件名["  << filename << "]  已经跟踪 : " << data->uiRecordMemID << std::endl;
+			//std::cout << "文件名["  << filename << "]  已经跟踪 : " << data->uiRecordMemID << std::endl;
 		}
 		else
 		{

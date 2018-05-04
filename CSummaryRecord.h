@@ -84,6 +84,7 @@ typedef struct ST_SummaryRecord
 		switch(stringVect.at(0).at(0))
 		{
 		case '1':// 1|1508227752|CGI|ORDERSVR|LG1|Create|0|5
+			//1|1525424578|caller_1|callee_1|callee_node|method|1|100
 		{
 			if(stringVect.size() != 8)
 				return -3; // 格式与版本不符合
@@ -313,7 +314,9 @@ public:
 
 				STSummaryRecord objSTSummaryRecord;
 
-				if(0 == objSTSummaryRecord.Parse(itemline.c_str(),m_iIntval))
+				int iRet = objSTSummaryRecord.Parse(itemline.c_str(),m_iIntval)
+
+				if(0 == iRet)
 				{
 					if(NULL != GetSummaryRecord(&objSTSummaryRecord))
 					{
@@ -322,7 +325,7 @@ public:
 				}
 				else
 				{
-					std::cout << "解析行失败：" << itemline << std::endl;
+					std::cout << iRet << " 解析行失败：" << itemline << std::endl;
 				}
 			}
 
