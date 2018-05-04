@@ -88,7 +88,7 @@ typedef struct ST_SummaryRecord
 			if(stringVect.size() != 8)
 				return -3; // 格式与版本不符合
 
-			tmPeriod = MyUtility::CBaseCode::StringToUInt( stringVect.at(1));
+			tmPeriod = MyUtility::CBaseEncode::StringToUInt( stringVect.at(1));
 
 			tmPeriod -= tmPeriod % period;
 
@@ -98,8 +98,8 @@ typedef struct ST_SummaryRecord
 			strncpy(szCalleeNodeIp,stringVect.at(4).c_str(),sizeof(szCalleeNodeIp)-1);
 			strncpy(szMethodID,stringVect.at(5).c_str(),sizeof(szMethodID)-1);
 
-			iRetcode = MyUtility::CBaseCode::StringToInt( stringVect.at(6));
-			uiAvgTime = MyUtility::CBaseCode::StringToInt( stringVect.at(7));
+			iRetcode = MyUtility::CBaseEncode::StringToInt( stringVect.at(6));
+			uiAvgTime = MyUtility::CBaseEncode::StringToInt( stringVect.at(7));
 			uiMinTime = uiMaxTime = uiAvgTime;
 		}
 		default:
@@ -139,8 +139,9 @@ private:
 
 
 public:
-	SummaryRecord(){};
-	virtual ~SummaryRecord(){};
+	CSummaryRecord(){};
+
+	virtual ~CSummaryRecord(){};
 
 	int Init(const std::string & dir,int intval=300,const std::string & hra_file_name = ".hra.processing.recode",int max_count=1000)
 		{
@@ -223,7 +224,7 @@ public:
 				<<std::left<< std::endl;
 
 
-			for(iter=m_mapFileProcessingData.begin();iter != m_mapFileProcessingData.end();iter++)
+			for(iter=m_mapSummaryRecord.begin();iter != m_mapSummaryRecord.end();iter++)
 			{
 				std::cout
 						<<std::left<< std::setw(20)<< (iter->second)->uiRecordMemID
@@ -252,7 +253,7 @@ public:
 			{
 				data = m_mapSummaryRecord[objSTSummaryRecord->GetRecordID()];
 
-				data->uiAvgTime = data->uiCount/(data->uiCount+1) * data->uiAvgTime + objSTSummaryRecord->uiAvgTime /(data->uiCount+1)
+				data->uiAvgTime = data->uiCount/(data->uiCount+1) * data->uiAvgTime + objSTSummaryRecord->uiAvgTime /(data->uiCount+1);
 
 				if(data->uiMinTime > objSTSummaryRecord->uiAvgTime)
 					data->uiMinTime = objSTSummaryRecord->uiAvgTime;

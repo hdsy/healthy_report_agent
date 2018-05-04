@@ -83,7 +83,7 @@ void WatchProcessing()
 			MyUtility::g_objCCommandLineInfo.GetArgVal("mmap-id")+".record",
 			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("max_file_count"))*100);
 
-	objCSummaryRecord.DumpIno();
+	objCSummaryRecord.DumpInfo();
 
 }
 
@@ -151,7 +151,7 @@ void SummaryAndReport()
 
 
 		}
-		while(NULL != pCurFile )
+		while(NULL != pCurFile );
 
 		sleep(1); // 间隔1秒，继续扫描目录里面的文件变化
 	}
