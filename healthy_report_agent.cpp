@@ -49,7 +49,7 @@ void InitCommandLine()
 	MyUtility::g_objCCommandLineInfo.AddEntry("ext-name","--ext-name=","*log",false,true,"服务健康上报日志的扩展名,如*log");
 	MyUtility::g_objCCommandLineInfo.AddEntry("max_file_count","--max_file_count=","100",false,true,"为");
 	MyUtility::g_objCCommandLineInfo.AddEntry("kafuka-url","--kafuka-url=","kafuka://127.0.0.1:9092/healthy_report/0",false,true,"kafuka消息队列的地址、topic名与分区号");
-	MyUtility::g_objCCommandLineInfo.AddEntry("mmap-id","--mmap-id=",".hra.processing.",false,true,"mmap文件名前缀，记录文件处理状态*file.1与统计结果*summary.1，默认1000条，不够时会自动拓展,.1,.2");
+	MyUtility::g_objCCommandLineInfo.AddEntry("mmap-id","--mmap-id=",".hra.processing",false,true,"mmap文件名前缀，记录文件处理状态*file.1与统计结果*summary.1，默认1000条，不够时会自动拓展,.1,.2");
 	MyUtility::g_objCCommandLineInfo.AddEntry("summary_cycle","--summary_cycle=","300",false,true,"统计周期，按这个时间间隔汇总，单位秒，默认5分钟");
 	MyUtility::g_objCCommandLineInfo.AddEntry("eliminate-cycle","--eliminate-cycle=","600",false,true,"过期时间，处理完毕的文件如果持续时间未更新，则删除");
 	MyUtility::g_objCCommandLineInfo.AddEntry("run-by-cmdline","run-by-cmdline","off",true,true,"从命令行运行");
@@ -70,7 +70,7 @@ void WatchProcessing()
 
 	objCFileProcessingStatus.Init(MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir"),
 			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("eliminate-cycle")),
-			MyUtility::g_objCCommandLineInfo.GetArgVal("mmap-id"),
+			MyUtility::g_objCCommandLineInfo.GetArgVal("mmap-id")+".file",
 			MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("max_file_count")));
 
 	objCFileProcessingStatus.DumpInfo();
