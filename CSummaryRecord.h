@@ -320,7 +320,7 @@ public:
 
 				if(0 == iRet)
 				{
-					if(NULL != GetSummaryRecord(&objSTSummaryRecord))
+					if(NULL == GetSummaryRecord(&objSTSummaryRecord))
 					{
 						std::cout << "获取统计记录失败：" << objSTSummaryRecord.GetRecordID() << std::endl;
 					}
