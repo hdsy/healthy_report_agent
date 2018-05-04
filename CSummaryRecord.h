@@ -102,6 +102,8 @@ typedef struct ST_SummaryRecord
 			iRetcode = MyUtility::CBaseEncode::StringToInt( stringVect.at(6));
 			uiAvgTime = MyUtility::CBaseEncode::StringToInt( stringVect.at(7));
 			uiMinTime = uiMaxTime = uiAvgTime;
+
+			uiCount = 1;
 			break;
 		}
 		default:
@@ -212,7 +214,7 @@ public:
 			std::map<std::string,STSummaryRecord *>::iterator iter;
 
 			std::cout << "\r\n正在汇总的统计记录: \r\n =========================================\r\n "
-					;//<< "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890\r\n" ;
+					<< std::endl;//<< "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890\r\n" ;
 			std::cout
 				<<std::left<< std::setw(6)<< "MemID"
 				<<std::left<< std::setw(5)<< "Ver"
@@ -260,7 +262,7 @@ public:
 			{
 				data = m_mapSummaryRecord[objSTSummaryRecord->GetRecordID()];
 
-				data->uiAvgTime = data->uiCount/(data->uiCount+1) * data->uiAvgTime + objSTSummaryRecord->uiAvgTime /(data->uiCount+1);
+				data->uiAvgTime = (data->uiCount * data->uiAvgTime + objSTSummaryRecord->uiAvgTime )/(data->uiCount+1);
 
 				if(data->uiMinTime > objSTSummaryRecord->uiAvgTime)
 					data->uiMinTime = objSTSummaryRecord->uiAvgTime;
