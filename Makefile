@@ -14,10 +14,10 @@ all:	healthy_report_agent
 healthy_report_agent:	$(OBJS)
 	$(CXX) -o $@ $^ $(LDFLAGS)
 
-%.o:	$(PROJECT_ROOT)%.cpp
+%.o:	$(PROJECT_ROOT)%.cpp $(PROJECT_ROOT)%.h
 	$(CXX) -c $(CFLAGS) $(CXXFLAGS) $(CPPFLAGS) -o $@ $<
 
-%.o:	$(PROJECT_ROOT)%.c
+%.o:	$(PROJECT_ROOT)%.c $(PROJECT_ROOT)%.h
 	$(CC) -c $(CFLAGS) $(CPPFLAGS) -o $@ $<
 
 clean:
