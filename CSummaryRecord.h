@@ -102,6 +102,7 @@ typedef struct ST_SummaryRecord
 			iRetcode = MyUtility::CBaseEncode::StringToInt( stringVect.at(6));
 			uiAvgTime = MyUtility::CBaseEncode::StringToInt( stringVect.at(7));
 			uiMinTime = uiMaxTime = uiAvgTime;
+			break;
 		}
 		default:
 			std::cout << cVer << ":" << stringVect.at(0) << std::endl;
