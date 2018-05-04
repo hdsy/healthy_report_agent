@@ -176,22 +176,22 @@ public:
 					return -1;
 
 				pSTSummaryRecord->uiRecordMemID = i;
-	/**/
+	/*
 				std::cout
-						<<std::left<< std::setw(20)<< pSTSummaryRecord->uiRecordMemID
-						<<std::left<< std::setw(20)<< pSTSummaryRecord->cVer
-						<<std::left<< std::setw(20)<< pSTSummaryRecord->tmPeriod
-						<<std::left<< std::setw(50) << pSTSummaryRecord->szCaller
+						<<std::left<< std::setw(6)<< pSTSummaryRecord->uiRecordMemID
+						<<std::left<< std::setw(5)<< pSTSummaryRecord->cVer
+						<<std::left<< std::setw(11)<< pSTSummaryRecord->tmPeriod
+						<<std::left<< std::setw(20) << pSTSummaryRecord->szCaller
 						<<std::left<< std::setw(20)<< pSTSummaryRecord->szCallerNodeIp
 						<<std::left<< std::setw(20)<< pSTSummaryRecord->szCallee
 						<<std::left<< std::setw(20)<< pSTSummaryRecord->szCalleeNodeIp
 						<<std::left<< std::setw(20)<< pSTSummaryRecord->szCalleeNodePort
-						<<std::left<< std::setw(20)<< pSTSummaryRecord->iRetcode
-						<<std::left<< std::setw(20)<< pSTSummaryRecord->uiCount
-						<<std::left<< std::setw(20)<< pSTSummaryRecord->uiAvgTime
-						<<std::left<< std::setw(20)<< pSTSummaryRecord->uiMaxTime
-						<<std::left<< std::setw(20)<< pSTSummaryRecord->uiMinTime
-						<<std::left<< std::endl;
+						<<std::left<< std::setw(8)<< pSTSummaryRecord->iRetcode
+						<<std::left<< std::setw(11)<< pSTSummaryRecord->uiCount
+						<<std::left<< std::setw(6)<< pSTSummaryRecord->uiAvgTime
+						<<std::left<< std::setw(6)<< pSTSummaryRecord->uiMaxTime
+						<<std::left<< std::setw(6)<< pSTSummaryRecord->uiMinTime
+						<<std::left<< std::endl;*/
 
 				// 空间释放了
 				if(pSTSummaryRecord->szCaller[0] == 0)
@@ -209,21 +209,21 @@ public:
 			std::map<std::string,STSummaryRecord *>::iterator iter;
 
 			std::cout << "正在汇总的统计记录: \r\n =========================================\r\n "
-					<< "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890" ;
+					<< "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890\r\n" ;
 			std::cout
-				<<std::left<< std::setw(20)<< "内存ID"
-				<<std::left<< std::setw(20)<< "版本"
-				<<std::left<< std::setw(20)<< "时间段"
-				<<std::left<< std::setw(50) << "调用方ID"
-				<<std::left<< std::setw(20)<< "调用方IP"
-				<<std::left<< std::setw(20)<< "被调方ID"
-				<<std::left<< std::setw(20)<< "被调方IP"
-				<<std::left<< std::setw(20)<< "被调方PORT"
-				<<std::left<< std::setw(20)<< "返回码"
-				<<std::left<< std::setw(20)<< "总次数"
-				<<std::left<< std::setw(20)<< "平均时长"
-				<<std::left<< std::setw(20)<< "最大时长"
-				<<std::left<< std::setw(20)<< "最小时长"
+				<<std::left<< std::setw(6)<< "MemID"
+				<<std::left<< std::setw(5)<< "Ver"
+				<<std::left<< std::setw(11)<< "Time"
+				<<std::left<< std::setw(20) << "CallerID"
+				<<std::left<< std::setw(20)<< "CallerNode"
+				<<std::left<< std::setw(20)<< "CalleeID"
+				<<std::left<< std::setw(20)<< "CalleeIP"
+				<<std::left<< std::setw(20)<< "CalleePORT"
+				<<std::left<< std::setw(8)<< "Retcode"
+				<<std::left<< std::setw(11)<< "Count"
+				<<std::left<< std::setw(6)<< "Avg"
+				<<std::left<< std::setw(6)<< "Max"
+				<<std::left<< std::setw(6)<< "Min"
 				<<std::left<< std::endl;
 
 
