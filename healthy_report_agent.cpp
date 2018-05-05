@@ -42,7 +42,8 @@
 #include <sys/stat.h>
 #include "CFileProcessingStatus.h"
 #include "CSummaryRecord.h"
-#include <fiostream.h>
+#include <iostream>
+#include <fstream>
 
 void InitCommandLine()
 {
@@ -123,7 +124,7 @@ void LogTest()
 	// MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee")
 	// MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-retcode")
 
-	ofstream out(filepath);
+	std::ofstream out(filepath);
 
 	if (out.is_open())
 	{
