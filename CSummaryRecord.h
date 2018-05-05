@@ -315,6 +315,7 @@ public:
 				}
 
 				pSTFile->ilOffset = ifs.tellg();
+				pSTFile->tmLastProcessing = time(NULL)；
 
 				if(itemline.length() < 20 || itemline.length() > 800)
 				{

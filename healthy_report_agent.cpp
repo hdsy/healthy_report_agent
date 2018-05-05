@@ -61,7 +61,7 @@ void InitCommandLine()
 	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-count","--logtest-count=","10000",false,true,"日志总条数");
 	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-caller","--logtest-caller=","app",false,true,"调用方名称");
 	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-callee","--logtest-callee=","webservice",false,true,"被调用方名称");
-	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-callee-node","--logtest-callee-node=","192.168.1.1：1989",false,true,"被调用方所在节点");
+	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-callee-node","--logtest-callee-node=","192.168.1.1:1989",false,true,"被调用方所在节点");
 	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-callee-method","--logtest-callee-method=","getPrice",false,true,"被调用方接口名");
 	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-retcode","--logtest-retcode=","0",false,true,"返回码");
 
@@ -146,13 +146,13 @@ void LogTest()
 
 
 		out << 1
-			<< tmTmp
-			<< MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-caller")
-			<< MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee")
-			<< MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee-node")
-			<< MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee-method")
-			<< MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-retcode")
-			<< random() % 10000
+			<< "|" << tmTmp
+			<< "|" << MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-caller")
+			<< "|" << MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee")
+			<< "|" << MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee-node")
+			<< "|" << MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee-method")
+			<< "|" << MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-retcode")
+			<< "|" << random() % 10000
 			<< "\n";
 	}
 
