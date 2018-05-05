@@ -125,7 +125,7 @@ void LogTest()
 	// MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee")
 	// MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-retcode")
 
-	std::ofstream out(filepath.c_str());
+	std::ofstream out(filepath.c_str() ,std::ios::app);
 
 	if (!out.is_open())
 	{
