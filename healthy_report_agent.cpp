@@ -127,7 +127,7 @@ void LogTest()
 
 	std::ofstream out(filepath.c_str());
 
-	if (out.is_open())
+	if (!out.is_open())
 	{
 		std::cout << "Error on openning file :" << filepath << std::endl;
 		return ;
