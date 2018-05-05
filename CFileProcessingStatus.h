@@ -172,8 +172,12 @@ public:
 		{
 			while(fgets(szRes, sizeof(szRes), dl))
 			{
+				std::cout << "before:" << szRes << std::endl;
+
 				char *ws = strpbrk(szRes, " \t\n");
 				if(ws) *ws = '\0';
+
+				std::cout << "after:" << szRes << std::endl;
 
 
 				struct stat s_buff;
@@ -205,7 +209,7 @@ public:
 
 
 							}
-							//std::cout << "记录文件处理进度 ： [" << szRes <<"]" <<std::endl;
+							std::cout << "记录文件处理进度 ： [" << szRes <<"]" <<std::endl;
 					}
 					else
 					{
@@ -215,7 +219,7 @@ public:
 				else
 				{
 
-					std::cout << "获取文件信息失败 ： [" << szRes << "] 或文件信息小于最小值："<< s_buff.st_size <<std::endl;
+					std::cout << "获取文件信息失败 ： [" << szRes << "] 或文件为："<< s_buff.st_size << "小于最小值"<<std::endl;
 				}
 
 			}

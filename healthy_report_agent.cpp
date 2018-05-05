@@ -42,6 +42,7 @@
 #include <sys/stat.h>
 #include "CFileProcessingStatus.h"
 #include "CSummaryRecord.h"
+#include <fiostream.h>
 
 void InitCommandLine()
 {
@@ -52,6 +53,17 @@ void InitCommandLine()
 	MyUtility::g_objCCommandLineInfo.AddEntry("mmap-id","--mmap-id=",".hra.processing",false,true,"mmap文件名前缀，记录文件处理状态*file.1与统计结果*summary.1，默认1000条，不够时会自动拓展,.1,.2");
 	MyUtility::g_objCCommandLineInfo.AddEntry("summary_cycle","--summary_cycle=","300",false,true,"统计周期，按这个时间间隔汇总，单位秒，默认5分钟");
 	MyUtility::g_objCCommandLineInfo.AddEntry("eliminate-cycle","--eliminate-cycle=","600",false,true,"过期时间，处理完毕的文件如果持续时间未更新，则删除");
+
+	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-filename","--logtest-filename=","abcd1234",false,true,"日志文件名称");
+	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-begin-time","--eliminate-cycle=","1525527005",false,true,"日期记录开始时间");
+	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-end-time","--eliminate-cycle=","1525528005",false,true,"日期记录结束时间");
+	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-count","--logtest-count=","10000",false,true,"日志总条数");
+	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-caller","--logtest-caller=","app",false,true,"调用方名称");
+	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-callee","--logtest-callee=","webservice",false,true,"被调用方名称");
+	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-callee-node","--logtest-callee-node=","192.168.1.1：1989",false,true,"被调用方所在节点");
+	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-callee-method","--logtest-callee-method=","getPrice",false,true,"被调用方接口名");
+	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-retcode","--logtest-retcode=","0",false,true,"返回码");
+
 	MyUtility::g_objCCommandLineInfo.AddEntry("run-by-cmdline","run-by-cmdline","off",true,true,"从命令行运行");
 
 	MyUtility::g_objCCommandLineInfo.AddEntry("cmd","--cmd=","work",false,false,
@@ -87,6 +99,64 @@ void WatchProcessing()
 
 }
 
+// 随机打印一个文件，随机n条记录
+void LogTest()
+{
+	// 目录：MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir")
+
+	// 后缀：MyUtility::g_objCCommandLineInfo.GetArgVal("ext-name")
+
+	// 后缀：MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-filename")
+
+	// 文件名 路径
+	std::string filepath = 	MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir")+
+			MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-filename")+
+			MyUtility::g_objCCommandLineInfo.GetArgVal("ext-name");
+
+
+	// 时间区间  	MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-begin-time")
+	//			MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-end-time")
+	//			MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-count")
+
+
+	// 调用方与被调方返回码等 MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-caller")
+	// MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee")
+	// MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-retcode")
+
+	ofstream out(filepath);
+
+	if (out.is_open())
+	{
+		std::cout << "Error on openning file :" << filepath << std::endl;
+		return ;
+	}
+
+	int iCount = MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-count"));
+
+	unsigned int tmBegin = MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-begin-time"));
+	unsigned int tmEnd = MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-end-time"));
+
+	unsigned int tmTmp;
+
+	for(int i = 0 ; i < iCount; i++ )
+	{	// 1|1525443767|caller_2|callee_1|callee_node|method|-3|90
+		tmTmp = (i*(tmEnd-tmBegin)/iCount ) + tmBegin;
+
+
+		out << 1
+			<< tmTmp
+			<< MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-caller")
+			<< MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee")
+			<< MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee-node")
+			<< MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee-method")
+			<< MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-retcode")
+			<< random() % 10000
+			<< "\n";
+	}
+
+	out.close();
+
+}
 
 
 void SummaryAndReport()
@@ -178,6 +248,10 @@ int main(int argc, const char **argv) {
 	else if(MyUtility::g_objCCommandLineInfo.GetArgVal("cmd") == "watch")
 	{
 		WatchProcessing();
+	}
+	else if(MyUtility::g_objCCommandLineInfo.GetArgVal("cmd") == "logtest")
+	{
+		LogTest();
 	}
 	else
 	{

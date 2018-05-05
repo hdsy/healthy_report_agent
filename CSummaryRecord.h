@@ -31,15 +31,16 @@
 typedef struct ST_SummaryRecord
 {
 	unsigned int uiRecordMemID;
+
 	time_t tmPeriod; // 时间范围：按设定的统计时间，如果是5分钟，则取5分钟分段的开始时间
 
 	char cVer;
+
 	char szCaller[64];
-	char szCallerNodeIp[30];
+	char szCallerNodeIp[20];
 
 	char szCallee[64];
 	char szCalleeNodeIp[30];
-	char szCalleeNodePort[6];
 
 	char szMethodID[64];
 
@@ -63,7 +64,6 @@ typedef struct ST_SummaryRecord
 				+ szCallerNodeIp +"|"
 				+ szCallee +"|"
 				+ szCalleeNodeIp +"|"
-				+ szCalleeNodePort +"|"
 				+ MyUtility::CBaseEncode::IntToString(iRetcode);
 
 
@@ -192,7 +192,6 @@ public:
 						<<std::left<< std::setw(20)<< pSTSummaryRecord->szCallerNodeIp
 						<<std::left<< std::setw(20)<< pSTSummaryRecord->szCallee
 						<<std::left<< std::setw(20)<< pSTSummaryRecord->szCalleeNodeIp
-						<<std::left<< std::setw(20)<< pSTSummaryRecord->szCalleeNodePort
 						<<std::left<< std::setw(8)<< pSTSummaryRecord->iRetcode
 						<<std::left<< std::setw(11)<< pSTSummaryRecord->uiCount
 						<<std::left<< std::setw(6)<< pSTSummaryRecord->uiAvgTime
@@ -218,25 +217,27 @@ public:
 			std::cout << "\r\n正在汇总的统计记录: \r\n =========================================\r\n "
 					<< std::endl;//<< "12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890\r\n" ;
 			std::cout
+				<<std::left<< "[?]"
 				<<std::left<< std::setw(6)<< "MemID"
 				<<std::left<< std::setw(5)<< "Ver"
 				<<std::left<< std::setw(11)<< "Time"
 				<<std::left<< std::setw(20) << "CallerID"
-				<<std::left<< std::setw(16)<< "1IP"
+				<<std::left<< std::setw(16)<< "Node1"
 				<<std::left<< std::setw(20)<< "CalleeID"
-				<<std::left<< std::setw(16)<< "2IP"
-				<<std::left<< std::setw(6)<< "2Port"
+				<<std::left<< std::setw(16)<< "Node2"
 				<<std::left<< std::setw(8)<< "Retcode"
 				<<std::left<< std::setw(11)<< "Count"
-				<<std::left<< std::setw(6)<< "Avg"
-				<<std::left<< std::setw(6)<< "Max"
-				<<std::left<< std::setw(6)<< "Min"
+				<<std::left<< std::setw(8)<< "Avg"
+				<<std::left<< std::setw(8)<< "Max"
+				<<std::left<< std::setw(8)<< "Min"
+				<<std::left<< std::setw(5)<< "Staus"
 				<<std::left<< std::endl;
 
 
 			for(iter=m_mapSummaryRecord.begin();iter != m_mapSummaryRecord.end();iter++)
 			{
 				std::cout
+						<<std::left<< "["<< (iter->second)->cStatus<<"]"
 						<<std::left<< std::setw(6)<< (iter->second)->uiRecordMemID
 						<<std::left<< std::setw(5)<< (iter->second)->cVer
 						<<std::left<< std::setw(11)<< (iter->second)->tmPeriod
@@ -244,12 +245,11 @@ public:
 						<<std::left<< std::setw(16)<< (iter->second)->szCallerNodeIp
 						<<std::left<< std::setw(20)<< (iter->second)->szCallee
 						<<std::left<< std::setw(16)<< (iter->second)->szCalleeNodeIp
-						<<std::left<< std::setw(6)<< (iter->second)->szCalleeNodePort
 						<<std::left<< std::setw(8)<< (iter->second)->iRetcode
 						<<std::left<< std::setw(11)<< (iter->second)->uiCount
-						<<std::left<< std::setw(6)<< (iter->second)->uiAvgTime
-						<<std::left<< std::setw(6)<< (iter->second)->uiMaxTime
-						<<std::left<< std::setw(6)<< (iter->second)->uiMinTime
+						<<std::left<< std::setw(8)<< (iter->second)->uiAvgTime
+						<<std::left<< std::setw(8)<< (iter->second)->uiMaxTime
+						<<std::left<< std::setw(8)<< (iter->second)->uiMinTime
 						<<std::left<< std::endl;
 			}
 			std::cout << "-----------------------------------------\r\n ";
