@@ -89,7 +89,7 @@ public:
 		}
 
 		// 遍历 ,建立文件名到文件相关处理状态的数据
-		for(int i=0;i<objCLineSpaceMgr.GetSize();i++)
+		for(int i=0;i<= objCLineSpaceMgr.GetSize();i++)
 		{
 			STFileProcessingStatus *pSTFileProcessingStatus = (STFileProcessingStatus*) objCLineSpaceMgr.AsVoid(CPointer(1,i));
 
