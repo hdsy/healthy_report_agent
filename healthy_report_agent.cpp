@@ -48,7 +48,7 @@
 void InitCommandLine()
 {
 	MyUtility::g_objCCommandLineInfo.AddEntry("log-dir","--log-dir=","/data/healthy_report/log/",false,true,"服务健康上报日志存放目录，将分析此目录的文件并上报消息队列");
-	MyUtility::g_objCCommandLineInfo.AddEntry("ext-name","--ext-name=","*log",false,true,"服务健康上报日志的扩展名,如*log");
+	MyUtility::g_objCCommandLineInfo.AddEntry("ext-name","--ext-name=",".log",false,true,"服务健康上报日志的扩展名,如*log");
 	MyUtility::g_objCCommandLineInfo.AddEntry("max_file_count","--max_file_count=","100",false,true,"为");
 	MyUtility::g_objCCommandLineInfo.AddEntry("kafuka-url","--kafuka-url=","kafuka://127.0.0.1:9092/healthy_report/0",false,true,"kafuka消息队列的地址、topic名与分区号");
 	MyUtility::g_objCCommandLineInfo.AddEntry("mmap-id","--mmap-id=",".hra.processing",false,true,"mmap文件名前缀，记录文件处理状态*file.1与统计结果*summary.1，默认1000条，不够时会自动拓展,.1,.2");
@@ -69,6 +69,7 @@ void InitCommandLine()
 
 	MyUtility::g_objCCommandLineInfo.AddEntry("cmd","--cmd=","work",false,false,
 		"work 开始分析、汇总、上报的工作  \r\n"
+		"logtest 打日志  \r\n"
 		"\twatch 查看工作进度：分析中的文件列表，输出的结果  "
 		);
 }

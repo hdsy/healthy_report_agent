@@ -158,7 +158,7 @@ public:
 		memset(szCmd,0,sizeof(szCmd));
 		memset(szRes,0,sizeof(szRes));
 
-		sprintf(szCmd,"ls -1 -t %s/%s 2>/dev/null",MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir").c_str(),
+		sprintf(szCmd,"ls -1 -t %s/*%s 2>/dev/null",MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir").c_str(),
 				MyUtility::g_objCCommandLineInfo.GetArgVal("ext-name").c_str());
 
 		FILE *dl;	//list all *trans.so in fdir
