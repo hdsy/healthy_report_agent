@@ -280,8 +280,8 @@ public:
 
 				if (data->uiAvgTime == 0) data->uiAvgTime = 1;
 
-				std::cout << "\r\n"<< "Count:" << data->uiCount << "\tpre_avg:" << data->uiAvgTime << "\tnew:" << objSTSummaryRecord->uiAvgTime << "\r\n"
-						<<"dlTemp2: " <<dlTemp2 << "\tdlTemp3:" << dlTemp3 << "\tdlTemp1:"<< dlTemp1 << "\t avg:" << data->uiAvgTime << "\r\n"<< std::endl;
+				//std::cout << "\r\n"<< "Count:" << data->uiCount << "\tpre_avg:" << data->uiAvgTime << "\tnew:" << objSTSummaryRecord->uiAvgTime << "\r\n"
+				//		<<"dlTemp2: " <<dlTemp2 << "\tdlTemp3:" << dlTemp3 << "\tdlTemp1:"<< dlTemp1 << "\t avg:" << data->uiAvgTime << "\r\n"<< std::endl;
 
 				if(data->uiMinTime > objSTSummaryRecord->uiAvgTime)
 					data->uiMinTime = objSTSummaryRecord->uiAvgTime;
