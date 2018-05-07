@@ -57,7 +57,7 @@ typedef struct ST_FileProcessingStatus
 class CFileProcessingStatus
 {
 private:
-	std::map<std::string,STFileProcessingStatus *> m_mapFileProcessingData;
+	//std::map<std::string,STFileProcessingStatus *> m_mapFileProcessingData;
 
 	CLineSpaceMgr objCLineSpaceMgr;
 
