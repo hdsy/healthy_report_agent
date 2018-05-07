@@ -271,7 +271,7 @@ public:
 				//dlTemp = data->uiCount;
 				//dlTemp /= (data->uiCount+1);
 
-				dlTemp2 = data->uiCount;dlTemp2 /=(data->uiCount+1);dlTemp2 *= data->uiAvgTime
+				dlTemp2 = data->uiCount;dlTemp2 /=(data->uiCount+1);dlTemp2 *= data->uiAvgTime;
 				dlTemp3 = objSTSummaryRecord->uiAvgTime; dlTemp3/=(data->uiCount+1);
 
 				dlTemp1 = dlTemp2+dlTemp3;
