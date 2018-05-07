@@ -1,10 +1,12 @@
 PROJECT_ROOT = $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 CPPFLAGS += -I../public/utility/ \
-	-I../public/linespm/ 
+	-I../public/linespm/ \
+	-D_FILE_OFFSET_BITS=64 -D_LARGE_FILE -O3 -ggdb
 	
 LDFLAGS += -L../public/utility/ -lutility \
-	-L../public/linespm/ -llinespm
+	-L../public/linespm/ -llinespm \
+	-ggdb
 
 OBJS = healthy_report_agent.o
 

@@ -262,7 +262,7 @@ public:
 		{
 			STSummaryRecord * data = NULL;
 
-			double dlTemp = 0.0;
+			double dlTemp1 = 0.0,dlTemp2=0.0,dlTemp3=0.0;
 
 			if(m_mapSummaryRecord.find(objSTSummaryRecord->GetRecordID()) != m_mapSummaryRecord.end())
 			{
@@ -271,10 +271,14 @@ public:
 				//dlTemp = data->uiCount;
 				//dlTemp /= (data->uiCount+1);
 
-				dlTemp = data->uiAvgTime;
+				dlTemp2 = data->uiCount;dlTemp2 /=(data->uiCount+1);dlTemp2 *= data->uiAvgTime
+				dlTemp3 = objSTSummaryRecord->uiAvgTime; dlTemp3/=(data->uiCount+1);
 
+				dlTemp1 = dlTemp2+dlTemp3;
 
-				data->uiAvgTime = (data->uiCount * dlTemp + objSTSummaryRecord->uiAvgTime )/(data->uiCount+1);
+				data->uiAvgTime = dlTemp1;
+
+				std::cout << "dlTemp2: " <<dlTemp2 << "\tdlTemp3:" << dlTemp3 << "\tdlTemp1:"<< dlTemp1 << "\t avg:" << data->uiAvgTime << std::endl;
 
 				if(data->uiMinTime > objSTSummaryRecord->uiAvgTime)
 					data->uiMinTime = objSTSummaryRecord->uiAvgTime;
@@ -320,7 +324,7 @@ public:
 			while(true)
 			{
 				getline(ifs, itemline);
-				if(itemline == "" || itemline.length() <= 1)
+				if(itemline == "" )
 				{
 					break;
 				}

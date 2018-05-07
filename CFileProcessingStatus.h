@@ -202,8 +202,9 @@ public:
 							pSTFileProcessingStatus->ilSize = s_buff.st_size;
 
 							if (pSTFileProcessingStatus->ilSize < pSTFileProcessingStatus->ilOffset)
+							{
 								pSTFileProcessingStatus->ilOffset = 0;
-
+							}
 							if (pSTFileProcessingStatus->ilSize == pSTFileProcessingStatus->ilOffset)
 							{
 								// 1
