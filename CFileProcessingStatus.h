@@ -89,13 +89,18 @@ public:
 		}
 
 		// 遍历 ,建立文件名到文件相关处理状态的数据
-		for(int i=0;i<= objCLineSpaceMgr.GetSize();i++)
+		for(int i=0;i<= objCLineSpaceMgr.GetTotalSize();i++)
 		{
+			if(m_mapFileProcessingData.size() == objCLineSpaceMgr.GetSize()) break;
+
 			STFileProcessingStatus *pSTFileProcessingStatus = (STFileProcessingStatus*) objCLineSpaceMgr.AsVoid(CPointer(1,i));
 
 			// 系统错误
 			if(pSTFileProcessingStatus == NULL)
+			{
+				std::cout  << "NULL while CPoint(1," << i << ")" << std::endl;
 				return -1;
+			}
 
 			pSTFileProcessingStatus->uiRecordMemID = i;
 /*
@@ -106,7 +111,8 @@ public:
 								<<std::left<< std::setw(20)<< pSTFileProcessingStatus->ilOffset
 								<<std::left<< std::setw(20)<< pSTFileProcessingStatus->tmLastProcessing
 								<<std::left<< std::setw(20)<< pSTFileProcessingStatus->uiRecordMemID
-								<<std::left<< std::endl;*/
+								<<std::left<< std::endl;
+*/
 
 			// 空间释放了
 			if(pSTFileProcessingStatus->szFileName[0] == 0)

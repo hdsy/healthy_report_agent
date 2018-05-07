@@ -260,11 +260,19 @@ public:
 		{
 			STSummaryRecord * data = NULL;
 
+			double dlTemp = 0.0;
+
 			if(m_mapSummaryRecord.find(objSTSummaryRecord->GetRecordID()) != m_mapSummaryRecord.end())
 			{
 				data = m_mapSummaryRecord[objSTSummaryRecord->GetRecordID()];
 
-				data->uiAvgTime = (data->uiCount * data->uiAvgTime + objSTSummaryRecord->uiAvgTime )/(data->uiCount+1);
+				//dlTemp = data->uiCount;
+				//dlTemp /= (data->uiCount+1);
+
+				dlTemp = data->uiAvgTime;
+
+
+				data->uiAvgTime = (data->uiCount * dlTemp + objSTSummaryRecord->uiAvgTime )/(data->uiCount+1);
 
 				if(data->uiMinTime > objSTSummaryRecord->uiAvgTime)
 					data->uiMinTime = objSTSummaryRecord->uiAvgTime;
