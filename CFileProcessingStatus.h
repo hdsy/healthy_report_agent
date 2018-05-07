@@ -200,8 +200,8 @@ public:
 						if(NULL != pSTFileProcessingStatus )
 						{
 							RemoveFile(pSTFileProcessingStatus);
-							continue;
 						}
+						continue;
 
 					}
 
