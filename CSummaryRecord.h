@@ -278,7 +278,8 @@ public:
 
 				data->uiAvgTime = dlTemp1;
 
-				std::cout << "dlTemp2: " <<dlTemp2 << "\tdlTemp3:" << dlTemp3 << "\tdlTemp1:"<< dlTemp1 << "\t avg:" << data->uiAvgTime << std::endl;
+				std::cout << "Count:" << data->uiCount << "pre_avg:" << data->uiAvgTime << "new:" << objSTSummaryRecord->uiAvgTime << "\r\n"
+						<<"dlTemp2: " <<dlTemp2 << "\tdlTemp3:" << dlTemp3 << "\tdlTemp1:"<< dlTemp1 << "\t avg:" << data->uiAvgTime << std::endl;
 
 				if(data->uiMinTime > objSTSummaryRecord->uiAvgTime)
 					data->uiMinTime = objSTSummaryRecord->uiAvgTime;
