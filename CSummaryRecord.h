@@ -72,7 +72,7 @@ typedef struct ST_SummaryRecord
 
 
 
-	int  Parse(const char * str,int period)
+	int  Parse(const char * str,int period,const char * cip="127.0.0.1")
 	{
 		MyUtility::CStringVector stringVect;
 
@@ -96,7 +96,7 @@ typedef struct ST_SummaryRecord
 			tmPeriod -= tmPeriod % period;
 
 			strncpy(szCaller,stringVect.at(2).c_str(),sizeof(szCaller)-1);
-			//strncpy(szCallerNodeIp,stringVect.at(3).c_str(),sizeof(szCallerNodeIp)-1);
+			strncpy(szCallerNodeIp,cip,sizeof(szCallerNodeIp)-1);
 			strncpy(szCallee,stringVect.at(3).c_str(),sizeof(szCallee)-1);
 			strncpy(szCalleeNodeIp,stringVect.at(4).c_str(),sizeof(szCalleeNodeIp)-1);
 			strncpy(szMethodID,stringVect.at(5).c_str(),sizeof(szMethodID)-1);
@@ -174,8 +174,10 @@ public:
 			}
 
 			// 遍历 ,建立统计周期内调用关系与返回码到记录数据的信息
-			for(int i=0;i<objCLineSpaceMgr.GetSize();i++)
+			for(int i=0;i<objCLineSpaceMgr.GetTotalSize();i++)
 			{
+				if(m_mapSummaryRecord.size() == objCLineSpaceMgr.GetSize()) break;
+
 				STSummaryRecord *pSTSummaryRecord = (STSummaryRecord*) objCLineSpaceMgr.AsVoid(CPointer(1,i));
 
 				// 系统错误
@@ -306,7 +308,7 @@ public:
 			return data;
 		}
 
-		void Parse(STFileProcessingStatus * pSTFile)
+		void Parse(STFileProcessingStatus * pSTFile,const char * cip="127.0.0.1")
 		{
 			std::ifstream ifs (pSTFile->szFileName, std::ifstream::in);
 
@@ -333,7 +335,7 @@ public:
 
 				STSummaryRecord objSTSummaryRecord;
 
-				int iRet = objSTSummaryRecord.Parse(itemline.c_str(),m_iIntval);
+				int iRet = objSTSummaryRecord.Parse(itemline.c_str(),m_iIntval,cip);
 
 				if(0 == iRet)
 				{

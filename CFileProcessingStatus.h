@@ -178,12 +178,12 @@ public:
 		{
 			while(fgets(szRes, sizeof(szRes), dl))
 			{
-				std::cout << "before:" << szRes << std::endl;
+				//std::cout << "before:" << szRes << std::endl;
 
 				char *ws = strpbrk(szRes, " \t\n");
 				if(ws) *ws = '\0';
 
-				std::cout << "after:" << szRes << std::endl;
+				//std::cout << "after:" << szRes << std::endl;
 
 
 				struct stat s_buff;
@@ -215,7 +215,7 @@ public:
 
 
 							}
-							std::cout << "记录文件处理进度 ： [" << szRes <<"]" <<std::endl;
+							//std::cout << "记录文件处理进度 ： [" << szRes <<"]" <<std::endl;
 					}
 					else
 					{

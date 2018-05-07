@@ -44,6 +44,7 @@
 #include "CSummaryRecord.h"
 #include <iostream>
 #include <fstream>
+#include "CLocalIP.h"
 
 void InitCommandLine()
 {
@@ -64,7 +65,7 @@ void InitCommandLine()
 	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-callee-node","--logtest-callee-node=","192.168.1.1:1989",false,true,"被调用方所在节点");
 	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-callee-method","--logtest-callee-method=","getPrice",false,true,"被调用方接口名");
 	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-retcode","--logtest-retcode=","0",false,true,"返回码");
-
+	MyUtility::g_objCCommandLineInfo.AddEntry("Agent","--Agent=","127.0.0.1",false,true,"agent ip");
 	MyUtility::g_objCCommandLineInfo.AddEntry("run-by-cmdline","run-by-cmdline","off",true,true,"从命令行运行");
 
 	MyUtility::g_objCCommandLineInfo.AddEntry("cmd","--cmd=","work",false,false,
@@ -163,6 +164,12 @@ void LogTest()
 
 void SummaryAndReport()
 {
+	MyUtility::CStringMap::const_iterator iter;
+
+	for(iter = CLocalIP::GetInstance()->GetIpMap().begin();
+			iter != CLocalIP::GetInstance()->GetIpMap().end();
+			iter++)
+		std::cout << iter->first << ":" << iter->second << std::endl;
 	/**
 	 * 确保一个目录只有一个进程在运行，通过在目录里建立一个/$mmap-id/single_instance.lck来实现
 	 */
@@ -218,7 +225,7 @@ void SummaryAndReport()
 				break;
 
 			// 打开文件并分析
-			objCSummaryRecord.Parse(pCurFile);
+			objCSummaryRecord.Parse(pCurFile,MyUtility::g_objCCommandLineInfo.GetArgVal("Agent").c_str());
 
 
 
