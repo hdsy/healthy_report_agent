@@ -217,20 +217,17 @@ void SummaryAndReport()
 
 		STFileProcessingStatus *pCurFile = NULL;
 
-		do
+		std::map<std::string,STFileProcessingStatus *>::iterator iter;
+
+		for(iter=objCFileProcessingStatus.m_mapFileProcessingData.begin();iter != objCFileProcessingStatus.m_mapFileProcessingData.end();iter++)
 		{
-			pCurFile = objCFileProcessingStatus.GetFileProcess();
-
-			if(pCurFile == NULL)
-				break;
-
-			// 打开文件并分析
-			objCSummaryRecord.Parse(pCurFile,MyUtility::g_objCCommandLineInfo.GetArgVal("Agent").c_str());
-
-
-
+			if ((iter->second)->ilOffset < (iter->second)->ilSize)
+			{
+				pCurFile = (iter->second);
+				// 打开文件并分析
+				objCSummaryRecord.Parse(pCurFile,MyUtility::g_objCCommandLineInfo.GetArgVal("Agent").c_str());
+			}
 		}
-		while(NULL != pCurFile );
 
 		sleep(1); // 间隔1秒，继续扫描目录里面的文件变化
 	}

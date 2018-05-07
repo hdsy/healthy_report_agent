@@ -67,6 +67,7 @@ private:
 
 	size_t m_iFileMaxCount;
 public:
+	std::map<std::string,STFileProcessingStatus *> m_mapFileProcessingData;
 
 	int Init(const std::string & dir,int intval=3000,const std::string & hra_file_name = ".hra.processing.file",int max_file_count=100)
 	{
