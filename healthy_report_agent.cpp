@@ -166,8 +166,8 @@ void SummaryAndReport()
 {
 	MyUtility::CStringMap::const_iterator iter;
 
-	for(iter = CLocalIP::GetInstance()->GetIpMap().begin();
-			iter != CLocalIP::GetInstance()->GetIpMap().end();
+	for(iter = MyUtility::CLocalIP::GetInstance()->GetIpMap().begin();
+			iter != MyUtility::CLocalIP::GetInstance()->GetIpMap().end();
 			iter++)
 		std::cout << iter->first << ":" << iter->second << std::endl;
 	/**
