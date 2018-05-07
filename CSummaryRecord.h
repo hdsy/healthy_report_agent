@@ -226,7 +226,7 @@ public:
 				<<std::left<< std::setw(20) << "CallerID"
 				<<std::left<< std::setw(16)<< "Node1"
 				<<std::left<< std::setw(20)<< "CalleeID"
-				<<std::left<< std::setw(16)<< "Node2"
+				<<std::left<< std::setw(30)<< "Node2"
 				<<std::left<< std::setw(8)<< "Retcode"
 				<<std::left<< std::setw(11)<< "Count"
 				<<std::left<< std::setw(8)<< "Avg"
@@ -246,7 +246,7 @@ public:
 						<<std::left<< std::setw(20) << (iter->second)->szCaller
 						<<std::left<< std::setw(16)<< (iter->second)->szCallerNodeIp
 						<<std::left<< std::setw(20)<< (iter->second)->szCallee
-						<<std::left<< std::setw(16)<< (iter->second)->szCalleeNodeIp
+						<<std::left<< std::setw(30)<< (iter->second)->szCalleeNodeIp
 						<<std::left<< std::setw(8)<< (iter->second)->iRetcode
 						<<std::left<< std::setw(11)<< (iter->second)->uiCount
 						<<std::left<< std::setw(8)<< (iter->second)->uiAvgTime
@@ -278,8 +278,8 @@ public:
 
 				data->uiAvgTime = dlTemp1;
 
-				std::cout << "Count:" << data->uiCount << "pre_avg:" << data->uiAvgTime << "new:" << objSTSummaryRecord->uiAvgTime << "\r\n"
-						<<"dlTemp2: " <<dlTemp2 << "\tdlTemp3:" << dlTemp3 << "\tdlTemp1:"<< dlTemp1 << "\t avg:" << data->uiAvgTime << std::endl;
+				std::cout << "\r\n"<< "Count:" << data->uiCount << "\tpre_avg:" << data->uiAvgTime << "\tnew:" << objSTSummaryRecord->uiAvgTime << "\r\n"
+						<<"dlTemp2: " <<dlTemp2 << "\tdlTemp3:" << dlTemp3 << "\tdlTemp1:"<< dlTemp1 << "\t avg:" << data->uiAvgTime << "\r\n"<< std::endl;
 
 				if(data->uiMinTime > objSTSummaryRecord->uiAvgTime)
 					data->uiMinTime = objSTSummaryRecord->uiAvgTime;
