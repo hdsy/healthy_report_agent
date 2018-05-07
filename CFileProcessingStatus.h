@@ -190,7 +190,7 @@ public:
 
 				int status = stat(szRes,&s_buff); //获取文件对应属
 
-				if ((status == 0) && (s_buff.st_size>6))
+				if (status == 0)
 				{
 
 					// 启动线程进行文件分析，并上报
@@ -226,7 +226,7 @@ public:
 				else
 				{
 
-					std::cout << "获取文件信息失败 ： [" << szRes << "] 或文件为："<< s_buff.st_size << "小于最小值"<<std::endl;
+					std::cout << "获取文件信息失败 ： [" << szRes << "] "<<std::endl;
 				}
 
 			}
