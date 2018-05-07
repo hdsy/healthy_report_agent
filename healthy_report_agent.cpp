@@ -153,7 +153,7 @@ void LogTest()
 			<< "|" << MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee-node")
 			<< "|" << MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-callee-method")
 			<< "|" << MyUtility::g_objCCommandLineInfo.GetArgVal("logtest-retcode")
-			<< "|" << random() % 10000
+			<< "|" << ((random()+30) % 10000 )
 			<< "\n";
 	}
 
