@@ -310,6 +310,7 @@ public:
 
 		void Parse(STFileProcessingStatus * pSTFile,const char * cip="127.0.0.1")
 		{
+
 			std::ifstream ifs (pSTFile->szFileName, std::ifstream::in);
 
 			ifs.seekg (pSTFile->ilOffset);
@@ -324,7 +325,15 @@ public:
 					break;
 				}
 
-				pSTFile->ilOffset = ifs.tellg();
+				off_t tmpoff = ifs.tellg();
+
+				if((tmpoff > pSTFile->ilSize) || (tmpoff == -1))
+				{
+					std::cout << "文件偏移失败：tellg返回 " <<tmpoff << std::endl;
+					break;
+				}
+
+				pSTFile->ilOffset = tmpoff;
 				pSTFile->tmLastProcessing = time(NULL);
 
 				if(itemline.length() < 20 || itemline.length() > 800)
@@ -348,6 +357,8 @@ public:
 				{
 					std::cout << iRet << " 解析行失败：" << itemline << std::endl;
 				}
+
+
 			}
 
 			ifs.close();

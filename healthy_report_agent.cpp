@@ -57,8 +57,8 @@ void InitCommandLine()
 	MyUtility::g_objCCommandLineInfo.AddEntry("eliminate-cycle","--eliminate-cycle=","600",false,true,"过期时间，处理完毕的文件如果持续时间未更新，则删除");
 
 	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-filename","--logtest-filename=","abcd1234",false,true,"日志文件名称");
-	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-begin-time","--eliminate-cycle=","1525527005",false,true,"日期记录开始时间");
-	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-end-time","--eliminate-cycle=","1525528005",false,true,"日期记录结束时间");
+	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-begin-time","--logtest-begin-time=","1525527005",false,true,"日期记录开始时间");
+	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-end-time","--logtest-end-time=","1525528005",false,true,"日期记录结束时间");
 	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-count","--logtest-count=","10000",false,true,"日志总条数");
 	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-caller","--logtest-caller=","app",false,true,"调用方名称");
 	MyUtility::g_objCCommandLineInfo.AddEntry("logtest-callee","--logtest-callee=","webservice",false,true,"被调用方名称");
