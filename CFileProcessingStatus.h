@@ -195,7 +195,7 @@ public:
 					STFileProcessingStatus *pSTFileProcessingStatus = NULL;
 					if(s_buff.st_size <= 6)
 					{
-						pSTFileProcessingStatus = GetFileProcessAlready();
+						pSTFileProcessingStatus = GetFileProcessAlready(szRes);
 
 						if(NULL != pSTFileProcessingStatus )
 						{
