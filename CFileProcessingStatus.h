@@ -192,9 +192,22 @@ public:
 
 				if (status == 0)
 				{
+					STFileProcessingStatus *pSTFileProcessingStatus = NULL;
+					if(s_buff.st_size <= 6)
+					{
+						pSTFileProcessingStatus = GetFileProcessAlready();
+
+						if(NULL != pSTFileProcessingStatus )
+						{
+							RemoveFile(pSTFileProcessingStatus);
+							continue;
+						}
+
+					}
+
 
 					// 启动线程进行文件分析，并上报
-					STFileProcessingStatus *pSTFileProcessingStatus = GetFileProcess(szRes);
+					pSTFileProcessingStatus = GetFileProcess(szRes);
 
 					if(NULL != pSTFileProcessingStatus )
 					{
@@ -265,6 +278,25 @@ public:
 
 		return NULL;
 	}
+
+	STFileProcessingStatus * GetFileProcessAlready(const char * filename)
+		{
+			STFileProcessingStatus * data = NULL;
+
+
+
+
+			if(m_mapFileProcessingData.find(filename) != m_mapFileProcessingData.end())
+			{
+
+
+				data = m_mapFileProcessingData[filename];
+
+				//std::cout << "文件名["  << filename << "]  已经跟踪 : " << data->uiRecordMemID << std::endl;
+			}
+
+			return data;
+		}
 
 	STFileProcessingStatus * GetFileProcess(const char * filename)
 	{
