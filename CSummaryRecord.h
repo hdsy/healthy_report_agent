@@ -46,11 +46,11 @@ typedef struct ST_SummaryRecord
 
 	int iRetcode;
 
-	unsigned int uiCount;
+	double uiCount;
 
-	unsigned int uiMaxTime;
-	unsigned int uiMinTime;
-	unsigned int uiAvgTime;
+	double uiMaxTime;
+	double uiMinTime;
+	double uiAvgTime;
 
 	char cStatus;  // 0 统计中，1 统计完毕 ，2 上报完毕
 
@@ -262,26 +262,14 @@ public:
 		{
 			STSummaryRecord * data = NULL;
 
-			double dlTemp1 = 0.0,dlTemp2=0.0,dlTemp3=0.0;
-
 			if(m_mapSummaryRecord.find(objSTSummaryRecord->GetRecordID()) != m_mapSummaryRecord.end())
 			{
 				data = m_mapSummaryRecord[objSTSummaryRecord->GetRecordID()];
 
-				//dlTemp = data->uiCount;
-				//dlTemp /= (data->uiCount+1);
 
-				dlTemp2 = data->uiCount;dlTemp2 /=(data->uiCount+1);dlTemp2 *= data->uiAvgTime;
-				dlTemp3 = objSTSummaryRecord->uiAvgTime; dlTemp3/=(data->uiCount+1);
-
-				dlTemp1 = dlTemp2 + dlTemp3;
-
-				data->uiAvgTime = dlTemp1;
+				data->uiAvgTime = data->uiCount/(data->uiCount+1)*data->uiAvgTime + objSTSummaryRecord->uiAvgTime /(data->uiCount+1);
 
 				if (data->uiAvgTime == 0) data->uiAvgTime = 1;
-
-				//std::cout << "\r\n"<< "Count:" << data->uiCount << "\tpre_avg:" << data->uiAvgTime << "\tnew:" << objSTSummaryRecord->uiAvgTime << "\r\n"
-				//		<<"dlTemp2: " <<dlTemp2 << "\tdlTemp3:" << dlTemp3 << "\tdlTemp1:"<< dlTemp1 << "\t avg:" << data->uiAvgTime << "\r\n"<< std::endl;
 
 				if(data->uiMinTime > objSTSummaryRecord->uiAvgTime)
 					data->uiMinTime = objSTSummaryRecord->uiAvgTime;
