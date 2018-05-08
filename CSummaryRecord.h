@@ -336,7 +336,7 @@ public:
 
 				if((tmpoff > pSTFile->ilSize) || (tmpoff == -1))
 				{
-					std::cout << "文件偏移失败：tellg返回 " <<tmpoff << std::endl;
+					std::cout << "文件偏移失败：tellg返回 " <<tmpoff << " " << itemline << std::endl;
 					break;
 				}
 
