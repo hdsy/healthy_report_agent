@@ -334,13 +334,28 @@ public:
 
 				off_t tmpoff = ifs.tellg();
 
-				if((tmpoff > pSTFile->ilSize) || (tmpoff == -1))
+				if((tmpoff > pSTFile->ilSize) )
 				{
-					std::cout << "文件偏移失败：tellg返回 " <<tmpoff << " " << itemline << std::endl;
+					//std::cout << "文件偏移超过文件大小  ： " << tmpoff << std::endl;
 					break;
 				}
+				else if (tmpoff == -1)
+				{
+					if(itemline.size() > 0)
+					{
+						pSTFile->ilOffset += itemline.size();
+					}
+					else
+					{
+						std::cout << "文件偏移失败：tellg返回 " << tmpoff << " itemline:" << itemline << std::endl;
+						break;
+					}
+				}
+				else
+				{
+					pSTFile->ilOffset = tmpoff;
+				}
 
-				pSTFile->ilOffset = tmpoff;
 				pSTFile->tmLastProcessing = time(NULL);
 
 				if(itemline.length() < 20 || itemline.length() > 800)
