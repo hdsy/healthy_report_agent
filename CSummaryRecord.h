@@ -380,6 +380,12 @@ public:
 					std::cout << iRet << " 解析行失败：" << itemline << std::endl;
 				}
 
+				// 最后一句getline后，个别大文件的偏移量并没有移到末尾
+				if (tmpoff == -1)
+				{
+					break;
+				}
+
 
 			}
 
