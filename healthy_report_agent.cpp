@@ -254,7 +254,7 @@ void SummaryAndReport()
 
 			time_t now = time(NULL);
 
-			cycle = MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("summary_cycle"));
+			int cycle = MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("summary_cycle"));
 
 			for(iter=objCSummaryRecord.m_mapSummaryRecord.begin();
 					iter != objCSummaryRecord.m_mapSummaryRecord.end();
