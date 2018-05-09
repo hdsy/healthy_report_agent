@@ -231,18 +231,44 @@ void SummaryAndReport()
 		objCFileProcessingStatus.GetDirectoryFileStatus();
 
 		// 遍历文件列表，并统计
-
-		STFileProcessingStatus *pCurFile = NULL;
-
-		std::map<std::string,STFileProcessingStatus *>::iterator iter;
-
-		for(iter=objCFileProcessingStatus.m_mapFileProcessingData.begin();iter != objCFileProcessingStatus.m_mapFileProcessingData.end();iter++)
 		{
-			if ((iter->second)->ilOffset < (iter->second)->ilSize)
+			STFileProcessingStatus *pCurFile = NULL;
+
+			std::map<std::string,STFileProcessingStatus *>::iterator iter;
+
+			for(iter=objCFileProcessingStatus.m_mapFileProcessingData.begin();iter != objCFileProcessingStatus.m_mapFileProcessingData.end();iter++)
 			{
-				pCurFile = (iter->second);
-				// 打开文件并分析
-				objCSummaryRecord.Parse(pCurFile,MyUtility::g_objCCommandLineInfo.GetArgVal("Agent").c_str());
+				if ((iter->second)->ilOffset < (iter->second)->ilSize)
+				{
+					pCurFile = (iter->second);
+					// 打开文件并分析
+					objCSummaryRecord.Parse(pCurFile,MyUtility::g_objCCommandLineInfo.GetArgVal("Agent").c_str());
+				}
+			}
+		}
+
+		// 对分析完毕的记录[当前时间/INTV大于记录时间]，进行上报，并清除
+		{
+			STSummaryRecord *pCurRecord = NULL;
+			std::map<std::string,STSummaryRecord *>::iterator iter;
+
+			time_t now = time(NULL);
+
+			for(iter=objCSummaryRecord.m_mapSummaryRecord.begin();
+					iter != objCSummaryRecord.m_mapSummaryRecord.end();
+					iter++)
+			{
+				pCurRecord = (iter->second);
+
+				//  标记分析完毕，并上报，标记上报，并删除
+				if (pCurRecord->tmPeriod + MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("summary_cycle") < now)
+				{
+					pCurRecord->cStatus = "1";
+
+					// 上报，标记上报
+					// 删除
+					RemoveRecord(pCurRecord);
+				}
 			}
 		}
 

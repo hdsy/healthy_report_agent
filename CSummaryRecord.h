@@ -133,7 +133,6 @@ typedef struct ST_SummaryRecord
 class CSummaryRecord
 {
 private:
-	std::map<std::string,STSummaryRecord *> m_mapSummaryRecord;
 
 	CLineSpaceMgr objCLineSpaceMgr;
 
@@ -146,6 +145,7 @@ private:
 
 
 public:
+	std::map<std::string,STSummaryRecord *> m_mapSummaryRecord;
 	CSummaryRecord()
 	{
 		std::cout << "构造统计记录对象 ：" << time(NULL) <<std::endl;
@@ -213,20 +213,15 @@ public:
 		}
 
 	void RemoveRecord(STSummaryRecord * record)
-		{
-			m_mapSummaryRecord.erase(record);
+	{
+		m_mapSummaryRecord.erase(record->GetRecordID());
 
-			//remove(file->szFileName);
+		CPointer pt(1,record->uiRecordMemID);
 
+		objCLineSpaceMgr.Free(pt);
 
-			truncate(file->szFileName,0);
-
-			CPointer pt(1,file->uiRecordMemID);
-
-			objCLineSpaceMgr.Free(pt);
-
-			memset(file,0 ,sizeof(STFileProcessingStatus));
-		}
+		memset(record,0 ,sizeof(STSummaryRecord));
+	}
 		void DumpInfo()
 		{
 			std::map<std::string,STSummaryRecord *>::iterator iter;
