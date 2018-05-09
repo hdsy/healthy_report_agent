@@ -256,7 +256,7 @@ public:
 
 		for(iter=m_mapFileProcessingData.begin();iter != m_mapFileProcessingData.end();iter++)
 		{
-			if(std::set<std::string>::end == tSetFileName.find((iter->second)->szFileName))
+			if(tSetFileName.end() == tSetFileName.find((iter->second)->szFileName))
 				RemoveFile(iter->second);
 		}
 
