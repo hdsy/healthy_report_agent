@@ -263,11 +263,11 @@ void SummaryAndReport()
 				//  标记分析完毕，并上报，标记上报，并删除
 				if ((pCurRecord->tmPeriod +MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("summary_cycle")))< now)
 				{
-					pCurRecord->cStatus = "1";
+					pCurRecord->cStatus = '1';
 
 					// 上报，标记上报
 					// 删除
-					RemoveRecord(pCurRecord);
+					objCSummaryRecord.RemoveRecord(pCurRecord);
 				}
 			}
 		}
