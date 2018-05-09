@@ -165,6 +165,8 @@ public:
 		memset(szCmd,0,sizeof(szCmd));
 		memset(szRes,0,sizeof(szRes));
 
+		std::set<std::string> tSetFileName;
+
 		sprintf(szCmd,"ls -1 -t %s/*%s 2>/dev/null",MyUtility::g_objCCommandLineInfo.GetArgVal("log-dir").c_str(),
 				MyUtility::g_objCCommandLineInfo.GetArgVal("ext-name").c_str());
 
@@ -236,6 +238,8 @@ public:
 					{
 						std::cout << "没有足够的空间记录文件的进程 ： [" << szRes << "]" <<std::endl;
 					}
+
+					tSetFileName.insert(szRes);
 				}
 				else
 				{
@@ -245,6 +249,15 @@ public:
 
 			}
 			pclose(dl);
+		}
+
+		// 清除不存在的文件：被手工删除的文件
+		std::map<std::string,STFileProcessingStatus *>::iterator iter;
+
+		for(iter=m_mapFileProcessingData.begin();iter != m_mapFileProcessingData.end();iter++)
+		{
+			if(std::set:end == tSetFileName.find((iter->second)->szFileName))
+				RemoveFile(iter->second);
 		}
 
 	}

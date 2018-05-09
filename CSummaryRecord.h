@@ -212,6 +212,21 @@ public:
 
 		}
 
+	void RemoveRecord(STSummaryRecord * record)
+		{
+			m_mapSummaryRecord.erase(record);
+
+			//remove(file->szFileName);
+
+
+			truncate(file->szFileName,0);
+
+			CPointer pt(1,file->uiRecordMemID);
+
+			objCLineSpaceMgr.Free(pt);
+
+			memset(file,0 ,sizeof(STFileProcessingStatus));
+		}
 		void DumpInfo()
 		{
 			std::map<std::string,STSummaryRecord *>::iterator iter;
@@ -232,7 +247,6 @@ public:
 				<<std::left<< std::setw(8)<< "Avg"
 				<<std::left<< std::setw(8)<< "Max"
 				<<std::left<< std::setw(8)<< "Min"
-				<<std::left<< std::setw(5)<< "Staus"
 				<<std::left<< std::endl;
 
 
