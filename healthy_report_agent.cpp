@@ -254,6 +254,8 @@ void SummaryAndReport()
 
 			time_t now = time(NULL);
 
+			cycle= MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("summary_cycle"))；
+
 			for(iter=objCSummaryRecord.m_mapSummaryRecord.begin();
 					iter != objCSummaryRecord.m_mapSummaryRecord.end();
 					iter++)
@@ -262,7 +264,7 @@ void SummaryAndReport()
 
 				//  标记分析完毕，并上报，标记上报，并删除
 				if (
-						(pCurRecord->tmPeriod +MyUtility::CBaseEncode::StringToInt(MyUtility::g_objCCommandLineInfo.GetArgVal("summary_cycle")))< now) ||
+						((pCurRecord->tmPeriod +cycle) < now) ||
 						(pCurRecord->tmPeriod > now)
 					)
 				{
